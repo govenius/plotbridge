@@ -1,0 +1,155 @@
+---start of spirals.gnuplot---
+  0 #!/usr/bin/gnuplot
+  1 #
+  2 # This file was generated from <TemplateReference 'gnuplot_header.template_fragment'>.
+  3 #
+  4 
+  5 set macro
+  6 
+  7 figwidth = 600
+  8 figheight = 600
+  9 dpi = 72. # This affects only the figure size and panel placement computations,
+ 10           # not the actual DPI values set in the output files
+ 11 figwidth_in_inches = figwidth/dpi
+ 12 figheight_in_inches = figheight/dpi
+ 13 
+ 14 ################################################################################################
+ 15 # This multiplot layout code is adapted from http://www.sciencetronics.com/greenphotons/?p=570
+ 16 # as an alternative to "set multiplot layout rows,cols".
+ 17 # Original by Uwe Zimmermann, 2011 (CC BY-NC-SA 3.0).
+ 18 mpl_top    = 0.4 #inch  outer top margin, title goes here
+ 19 mpl_bot    = 0.5 #inch  outer bottom margin, x label goes here
+ 20 mpl_left   = 1.0 #inch  outer left margin, y label goes here
+ 21 mpl_right  = 0.02 #inch  outer right margin, y2 label goes here
+ 22 mpl_dx     = 0.05 #inch  inter-plot horizontal spacing
+ 23 mpl_dy     = 0.05 #inch  inter-plot vertical spacing
+ 24 mpl_ny     = 1   #number of rows
+ 25 mpl_nx     = 1   #number of columns
+ 26 
+ 27 # calculate remaining free dimensions
+ 28 mpl_width = ( figwidth_in_inches \
+ 29               - mpl_left - mpl_right \
+ 30               - (mpl_nx-1)*mpl_dx )/mpl_nx # width of individual plots
+ 31 mpl_height = ( figheight_in_inches \
+ 32               - mpl_top - mpl_bot \
+ 33               - (mpl_ny-1)*mpl_dy )/mpl_ny # height of individual plots
+ 34 
+ 35 # placement functions
+ 36 #   rows are numbered from bottom to top
+ 37 mpl_bot(n) = (mpl_bot+(n-1)*mpl_height+(n-1)*mpl_dy)/figheight_in_inches
+ 38 mpl_top(n)  = 1-((mpl_top+(mpl_ny-n)*(mpl_height+mpl_dy))/figheight_in_inches)
+ 39 #   columns are numbered from left to right
+ 40 mpl_left(n) = (mpl_left+(n-1)*mpl_width+(n-1)*mpl_dx)/figwidth_in_inches
+ 41 mpl_right(n)  = 1-((mpl_right+(mpl_nx-n)*(mpl_width+mpl_dx))/figwidth_in_inches)
+ 42 
+ 43 mpl_set_panel(row, col) = sprintf("set lmargin at screen mpl_left(%d); \
+ 44                                    set rmargin at screen mpl_right(%d); \
+ 45                                    set tmargin at screen mpl_top(%d); \
+ 46                                    set bmargin at screen mpl_bot(%d)", \
+ 47                                    col, col, row, row)
+ 48 
+ 49 # End of multiplot layout helper definitions.
+ 50 # To set a panel, use "eval mpl_set_panel(row, column)"
+ 51 ################################################################################################
+ 52 
+ 53 basefont = "Times,"
+ 54 
+ 55 baselinewidth = 1.
+ 56 
+ 57 unset multiplot
+ 58 
+ 59 pngdpi_per_screendpi = 96./72
+ 60 figwidthinpng = ceil(figwidth*pngdpi_per_screendpi)
+ 61 figheightinpng = ceil(figheight*pngdpi_per_screendpi)
+ 62 set terminal pngcairo size figwidthinpng,figheightinpng enhanced \
+ 63     font basefont linewidth baselinewidth
+ 64 set output "output.png"
+ 65 
+ 66 
+ 67 
+ 68 set xlabel "x(t)"
+ 69 set ylabel "y(t)"
+ 70 set zlabel "t"
+ 71 
+ 72 set grid
+ 73 
+ 74 
+ 75 set title "spirals"
+ 76 
+ 77 ###
+ 78 # Some common formatting
+ 79 ###
+ 80 
+ 81 # Tick formatting
+ 82 #set format x "%.2g"
+ 83 
+ 84 ### Ticks ###
+ 85 
+ 86 #set xtics 12.5,2,300 # for log scale
+ 87 #set xtics 0,50,300 # for linear scale
+ 88 #set xtics add ("200" 200)
+ 89 #set mxtics 5
+ 90 
+ 91 
+ 92 
+ 93 ### For histograms ###
+ 94 #set boxwidth 0.025
+ 95 #set style fill transparent solid 0.5 noborder
+ 96 
+ 97 ### Annotation ###
+ 98 
+ 99 # basic
+100 #set label "label A"  at first  30, first  60   # in data coordinates
+101 
+102 # more options
+103 #set label "{/Arial-Bold label B}"  at graph  0.9, graph  0.72 \
+104 #                                   rotate by 8 left \
+105 #                                   tc rgb "#777777"
+106 
+107 # legend position
+108 #set key out vert # place legends outside the plot area
+109 #set key cent right
+110 #set key left top
+111 #set key above title "Legend" box 3
+112 set key right bottom
+113 
+114 xunits = 1
+115 x2units = 1
+116 yunits = 1
+117 y2units = 1
+118 zunits = 1
+119 
+120 splot \
+121    "trace_da501114fd3c4afbb5bbfbf095550d52.bytes" using (column(1)/xunits):(column(2)/yunits):(column(3)/zunits) every ::0:0 \
+122    binary format='%float64%float64%float64' \
+123    with linespoints \
+124    linecolor 1 \
+125    pointtype 7 \
+126    linetype 1 \
+127    title "", \
+128    "trace_181090db1b38467eaf89133b71ac6119.bytes" using (column(1)/xunits):(column(2)/yunits):(column(3)/zunits) every ::0:0 \
+129    binary format='%float64%float64%float64' \
+130    with linespoints \
+131    linecolor 2 \
+132    pointtype 7 \
+133    linetype 1 \
+134    title ""
+135 
+136 
+137 
+138 # Check if the qt terminal is available.
+139 if (strstrt(GPVAL_TERMINALS, 'qt') > 0) interactive_terminal = "qt"; \
+140 else interactive_terminal = "wxt enhanced"
+141 
+142 set term @interactive_terminal size figwidth,figheight title "spirals" dashed
+143 # replace "dashed" with "solid" if you want to ignore "linetype"/"lt" in plot
+144 
+145 replot
+146 bind Close "exit gnuplot"
+147 
+148 
+---end of spirals.gnuplot---
+
+Replotting every 1 seconds (if plot script modification time changes)...
+Hit <ctrl> + C to exit.
+The plot engine has terminated. Exiting.

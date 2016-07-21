@@ -1,0 +1,175 @@
+---start of Histogram.gnuplot---
+  0 #!/usr/bin/gnuplot
+  1 #
+  2 # This file was generated from <TemplateReference 'gnuplot_header.template_fragment'>.
+  3 #
+  4 
+  5 set macro
+  6 
+  7 figwidth = 800
+  8 figheight = 600
+  9 dpi = 72. # This affects only the figure size and panel placement computations,
+ 10           # not the actual DPI values set in the output files
+ 11 figwidth_in_inches = figwidth/dpi
+ 12 figheight_in_inches = figheight/dpi
+ 13 
+ 14 ################################################################################################
+ 15 # This multiplot layout code is adapted from http://www.sciencetronics.com/greenphotons/?p=570
+ 16 # as an alternative to "set multiplot layout rows,cols".
+ 17 # Original by Uwe Zimmermann, 2011 (CC BY-NC-SA 3.0).
+ 18 mpl_top    = 0.4 #inch  outer top margin, title goes here
+ 19 mpl_bot    = 0.5 #inch  outer bottom margin, x label goes here
+ 20 mpl_left   = 1.0 #inch  outer left margin, y label goes here
+ 21 mpl_right  = 0.02 #inch  outer right margin, y2 label goes here
+ 22 mpl_dx     = 0.05 #inch  inter-plot horizontal spacing
+ 23 mpl_dy     = 0.05 #inch  inter-plot vertical spacing
+ 24 mpl_ny     = 1   #number of rows
+ 25 mpl_nx     = 1   #number of columns
+ 26 
+ 27 # calculate remaining free dimensions
+ 28 mpl_width = ( figwidth_in_inches \
+ 29               - mpl_left - mpl_right \
+ 30               - (mpl_nx-1)*mpl_dx )/mpl_nx # width of individual plots
+ 31 mpl_height = ( figheight_in_inches \
+ 32               - mpl_top - mpl_bot \
+ 33               - (mpl_ny-1)*mpl_dy )/mpl_ny # height of individual plots
+ 34 
+ 35 # placement functions
+ 36 #   rows are numbered from bottom to top
+ 37 mpl_bot(n) = (mpl_bot+(n-1)*mpl_height+(n-1)*mpl_dy)/figheight_in_inches
+ 38 mpl_top(n)  = 1-((mpl_top+(mpl_ny-n)*(mpl_height+mpl_dy))/figheight_in_inches)
+ 39 #   columns are numbered from left to right
+ 40 mpl_left(n) = (mpl_left+(n-1)*mpl_width+(n-1)*mpl_dx)/figwidth_in_inches
+ 41 mpl_right(n)  = 1-((mpl_right+(mpl_nx-n)*(mpl_width+mpl_dx))/figwidth_in_inches)
+ 42 
+ 43 mpl_set_panel(row, col) = sprintf("set lmargin at screen mpl_left(%d); \
+ 44                                    set rmargin at screen mpl_right(%d); \
+ 45                                    set tmargin at screen mpl_top(%d); \
+ 46                                    set bmargin at screen mpl_bot(%d)", \
+ 47                                    col, col, row, row)
+ 48 
+ 49 # End of multiplot layout helper definitions.
+ 50 # To set a panel, use "eval mpl_set_panel(row, column)"
+ 51 ################################################################################################
+ 52 
+ 53 basefont = "Times,"
+ 54 
+ 55 baselinewidth = 1.
+ 56 
+ 57 unset multiplot
+ 58 
+ 59 pngdpi_per_screendpi = 96./72
+ 60 figwidthinpng = ceil(figwidth*pngdpi_per_screendpi)
+ 61 figheightinpng = ceil(figheight*pngdpi_per_screendpi)
+ 62 set terminal pngcairo size figwidthinpng,figheightinpng enhanced \
+ 63     font basefont linewidth baselinewidth
+ 64 set output "output.png"
+ 65 
+ 66 
+ 67 
+ 68 set xlabel "energy (keV)"
+ 69 set ylabel "count"
+ 70 
+ 71 set grid
+ 72 
+ 73 
+ 74 set title "Histogram"
+ 75 
+ 76 ###
+ 77 # Some common formatting
+ 78 ###
+ 79 
+ 80 # Tick formatting
+ 81 #set format x "%.2g"
+ 82 
+ 83 ### Ticks ###
+ 84 
+ 85 #set xtics 12.5,2,300 # for log scale
+ 86 #set xtics 0,50,300 # for linear scale
+ 87 #set xtics add ("200" 200)
+ 88 #set mxtics 5
+ 89 
+ 90 
+ 91 
+ 92 ### For histograms ###
+ 93 #set boxwidth 0.025
+ 94 #set style fill transparent solid 0.5 noborder
+ 95 
+ 96 ### Annotation ###
+ 97 
+ 98 # basic
+ 99 #set label "label A"  at first  30, first  60   # in data coordinates
+100 
+101 # more options
+102 #set label "{/Arial-Bold label B}"  at graph  0.9, graph  0.72 \
+103 #                                   rotate by 8 left \
+104 #                                   tc rgb "#777777"
+105 
+106 # legend position
+107 #set key out vert # place legends outside the plot area
+108 #set key cent right
+109 #set key left top
+110 #set key above title "Legend" box 3
+111 set key right bottom
+112 
+113 xunits = 1
+114 x2units = 1
+115 yunits = 1
+116 y2units = 1
+117 zunits = 1
+118 
+119 ### For histograms ###
+120 #set boxwidth 0.1 # set the bar width manually
+121 set style fill transparent solid 0.9 noborder
+122 
+123 
+124 plot \
+125    "trace_a1ad41e23bac4890ab0570021293874c.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0 \
+126    binary format='%float64%float64' \
+127    with boxes \
+128    linecolor 1 \
+129    pointtype 7 \
+130    title "" \
+131    axes x1y1, \
+132    "trace_e57e6bc46fb6449fb83947825ad6dd4a.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0 \
+133    binary format='%float64%float64' \
+134    with boxes \
+135    linecolor 2 \
+136    pointtype 7 \
+137    title "" \
+138    axes x1y1
+139 
+140 
+141 
+142 # Check if the qt terminal is available.
+143 if (strstrt(GPVAL_TERMINALS, 'qt') > 0) interactive_terminal = "qt"; \
+144 else interactive_terminal = "wxt enhanced"
+145 
+146 set term @interactive_terminal size figwidth,figheight title "Histogram" dashed
+147 # replace "dashed" with "solid" if you want to ignore "linetype"/"lt" in plot
+148 
+149 replot
+150 bind Close "exit gnuplot"
+151 
+152 
+---end of Histogram.gnuplot---
+
+
+plot    "trace_a1ad41e23bac4890ab0570021293874c.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 1    pointtype 7    title ""    axes x1y1,    "trace_e57e6bc46fb6449fb83947825ad6dd4a.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 2    pointtype 7    title ""    axes x1y1
+                                                                                                                                                                                   ^
+"Histogram.gnuplot", line 139: warning: No pointtype specifier allowed, here
+
+plot    "trace_a1ad41e23bac4890ab0570021293874c.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 1    pointtype 7    title ""    axes x1y1,    "trace_e57e6bc46fb6449fb83947825ad6dd4a.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 2    pointtype 7    title ""    axes x1y1
+                                                                                                                                                                                                                                                                                                                                                                                                       ^
+"Histogram.gnuplot", line 139: warning: No pointtype specifier allowed, here
+
+plot    "trace_a1ad41e23bac4890ab0570021293874c.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 1    pointtype 7    title ""    axes x1y1,    "trace_e57e6bc46fb6449fb83947825ad6dd4a.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 2    pointtype 7    title ""    axes x1y1
+                                                                                                                                                                                   ^
+"Histogram.gnuplot", line 150: warning: No pointtype specifier allowed, here
+
+plot    "trace_a1ad41e23bac4890ab0570021293874c.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 1    pointtype 7    title ""    axes x1y1,    "trace_e57e6bc46fb6449fb83947825ad6dd4a.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 2    pointtype 7    title ""    axes x1y1
+                                                                                                                                                                                                                                                                                                                                                                                                       ^
+"Histogram.gnuplot", line 150: warning: No pointtype specifier allowed, here
+Replotting every 1 seconds (if plot script modification time changes)...
+Hit <ctrl> + C to exit.
+The plot engine has terminated. Exiting.

@@ -1,0 +1,224 @@
+---start of Transmission_vs_f_and_B.gnuplot---
+  0 #!/usr/bin/gnuplot
+  1 #
+  2 # This file was generated from <TemplateReference 'gnuplot_header.template_fragment'>.
+  3 #
+  4 
+  5 set macro
+  6 
+  7 figwidth = 400
+  8 figheight = 300
+  9 dpi = 72. # This affects only the figure size and panel placement computations,
+ 10           # not the actual DPI values set in the output files
+ 11 figwidth_in_inches = figwidth/dpi
+ 12 figheight_in_inches = figheight/dpi
+ 13 
+ 14 ################################################################################################
+ 15 # This multiplot layout code is adapted from http://www.sciencetronics.com/greenphotons/?p=570
+ 16 # as an alternative to "set multiplot layout rows,cols".
+ 17 # Original by Uwe Zimmermann, 2011 (CC BY-NC-SA 3.0).
+ 18 mpl_top    = 0.4 #inch  outer top margin, title goes here
+ 19 mpl_bot    = 0.5 #inch  outer bottom margin, x label goes here
+ 20 mpl_left   = 1.0 #inch  outer left margin, y label goes here
+ 21 mpl_right  = 0.02 #inch  outer right margin, y2 label goes here
+ 22 mpl_dx     = 0.05 #inch  inter-plot horizontal spacing
+ 23 mpl_dy     = 0.05 #inch  inter-plot vertical spacing
+ 24 mpl_ny     = 1   #number of rows
+ 25 mpl_nx     = 1   #number of columns
+ 26 
+ 27 # calculate remaining free dimensions
+ 28 mpl_width = ( figwidth_in_inches \
+ 29               - mpl_left - mpl_right \
+ 30               - (mpl_nx-1)*mpl_dx )/mpl_nx # width of individual plots
+ 31 mpl_height = ( figheight_in_inches \
+ 32               - mpl_top - mpl_bot \
+ 33               - (mpl_ny-1)*mpl_dy )/mpl_ny # height of individual plots
+ 34 
+ 35 # placement functions
+ 36 #   rows are numbered from bottom to top
+ 37 mpl_bot(n) = (mpl_bot+(n-1)*mpl_height+(n-1)*mpl_dy)/figheight_in_inches
+ 38 mpl_top(n)  = 1-((mpl_top+(mpl_ny-n)*(mpl_height+mpl_dy))/figheight_in_inches)
+ 39 #   columns are numbered from left to right
+ 40 mpl_left(n) = (mpl_left+(n-1)*mpl_width+(n-1)*mpl_dx)/figwidth_in_inches
+ 41 mpl_right(n)  = 1-((mpl_right+(mpl_nx-n)*(mpl_width+mpl_dx))/figwidth_in_inches)
+ 42 
+ 43 mpl_set_panel(row, col) = sprintf("set lmargin at screen mpl_left(%d); \
+ 44                                    set rmargin at screen mpl_right(%d); \
+ 45                                    set tmargin at screen mpl_top(%d); \
+ 46                                    set bmargin at screen mpl_bot(%d)", \
+ 47                                    col, col, row, row)
+ 48 
+ 49 # End of multiplot layout helper definitions.
+ 50 # To set a panel, use "eval mpl_set_panel(row, column)"
+ 51 ################################################################################################
+ 52 
+ 53 basefont = "Times,"
+ 54 
+ 55 baselinewidth = 1.
+ 56 
+ 57 unset multiplot
+ 58 
+ 59 pngdpi_per_screendpi = 96./72
+ 60 figwidthinpng = ceil(figwidth*pngdpi_per_screendpi)
+ 61 figheightinpng = ceil(figheight*pngdpi_per_screendpi)
+ 62 set terminal pngcairo size figwidthinpng,figheightinpng enhanced \
+ 63     font basefont linewidth baselinewidth
+ 64 set output "output.png"
+ 65 
+ 66 
+ 67 
+ 68 set xlabel "frequency (GHz)"
+ 69 set ylabel "B field (mT)"
+ 70 set zlabel "S_{21}"
+ 71 
+ 72 set logscale z
+ 73 unset grid
+ 74 
+ 75 set xrange [0.4:1.6]
+ 76 set yrange [-0.8:0.8]
+ 77 set zrange [0.001:1.05]
+ 78 
+ 79 set title "Transmission vs f and B"
+ 80 
+ 81 ###
+ 82 # Some common formatting
+ 83 ###
+ 84 
+ 85 # Tick formatting
+ 86 #set format x "%.2g"
+ 87 
+ 88 ### Ticks ###
+ 89 
+ 90 #set xtics 12.5,2,300 # for log scale
+ 91 #set xtics 0,50,300 # for linear scale
+ 92 #set xtics add ("200" 200)
+ 93 #set mxtics 5
+ 94 
+ 95 
+ 96 set format z "10^{\%L}"  # for 10^x format (for log scale)
+ 97 set ztics add ("1" 1)   # replace 10^0 by 1
+ 98 
+ 99 ### For histograms ###
+100 #set boxwidth 0.025
+101 #set style fill transparent solid 0.5 noborder
+102 
+103 ### Annotation ###
+104 
+105 # basic
+106 #set label "label A"  at first  30, first  60   # in data coordinates
+107 
+108 # more options
+109 #set label "{/Arial-Bold label B}"  at graph  0.9, graph  0.72 \
+110 #                                   rotate by 8 left \
+111 #                                   tc rgb "#777777"
+112 
+113 # legend position
+114 #set key out vert # place legends outside the plot area
+115 #set key cent right
+116 #set key left top
+117 #set key above title "Legend" box 3
+118 set key right bottom
+119 
+120 xunits = 1000000000.0
+121 x2units = 1
+122 yunits = 0.001
+123 y2units = 1
+124 zunits = 1
+125 
+126 set cblabel "S_{21}"
+127 
+128 set cbrange [0.001:1.05]
+129 
+130 set logscale cb
+131 
+132 set format cb "10^{\%L}"  # for 10^x format (for log scale)
+133 #set cbtics add ("1" 1)   # replace 10^0 by 1
+134 
+135 
+136 #set pm3d
+137 set pm3d map # map projects the 3D surface onto the xy plane
+138 set pm3d corners2color c1 # comment this out to take the mean of nearby points instead
+139 #set pm3d interpolate 2,2
+140 splot \
+141    "image_matrix.gnuplot_binary_matrix" \
+142    binary matrix \
+143    title ""
+144 
+145 # This works well if you have evenly spaced "slow axis" data
+146 #plot \
+147 #   "image_matrix.gnuplot_binary_matrix" \
+148 #   binary matrix with image \
+149 #   title ""
+150 
+151 ## List of slow coordinate values (if any)
+152 # trace_35f49de81c3a4feb8dfa03cebd47c09f.bytes slowcoord = -0.9
+153 # trace_aaa3a402024f42788ad13ecad91b0ef9.bytes slowcoord = -0.864
+154 # trace_bf899a6538944631a1d843729814031a.bytes slowcoord = -0.828
+155 # trace_a8faf7f638eb429183ab4ef38ab0cfc5.bytes slowcoord = -0.792
+156 # trace_37241f93df8e4353acb7d042061ce9c4.bytes slowcoord = -0.756
+157 # trace_05e23c24d1874fa3b4968daa98ec5500.bytes slowcoord = -0.72
+158 # trace_4b9d16e40a8948a5834dca5ecf554d68.bytes slowcoord = -0.684
+159 # trace_db8576b48a7745459c3115a8e9645740.bytes slowcoord = -0.648
+160 # trace_93f0d46e4554483fb330c524b754644f.bytes slowcoord = -0.612
+161 # trace_d9a7e12b42644cccbe65170db7c62a31.bytes slowcoord = -0.576
+162 # trace_7fdab10a4f5f4c35a4f6190d6f375fb8.bytes slowcoord = -0.54
+163 # trace_6427733302a848038e4a070e56fc660a.bytes slowcoord = -0.504
+164 # trace_4387a396301b4edeae225df798ccb87d.bytes slowcoord = -0.468
+165 # trace_379b42cba1f44c52b1778c54cf86b058.bytes slowcoord = -0.432
+166 # trace_d0627df3d0c64cd8b801028019dc0297.bytes slowcoord = -0.396
+167 # trace_c277f8f932de453e992ab8ec15b1bf01.bytes slowcoord = -0.36
+168 # trace_a501111505d44e6b9fb6ef4e2a72103c.bytes slowcoord = -0.324
+169 # trace_1347ffbc1cef49cc9f09107fa1a7ee3f.bytes slowcoord = -0.288
+170 # trace_dada0ad4c8e3458b97241975ffe7c0df.bytes slowcoord = -0.252
+171 # trace_13a5eeddac944a3ab8d2bcdca93bdba9.bytes slowcoord = -0.216
+172 # trace_a904128dd5fa4f018d19ae9af9d8b2d4.bytes slowcoord = -0.18
+173 # trace_88c878166ea346c3963035f282941bcf.bytes slowcoord = -0.144
+174 # trace_760eca43877041ae9c29601e3666ba93.bytes slowcoord = -0.108
+175 # trace_91580760b9344b4180faa3fde4f6a405.bytes slowcoord = -0.072
+176 # trace_8f48be653f464950b3a05889e7f74c5b.bytes slowcoord = -0.036
+177 # trace_57f86195e64446a8b9e7569fe997f0a9.bytes slowcoord = 0.0
+178 # trace_412cc6122ba241919e5dacec4b250a56.bytes slowcoord = 0.036
+179 # trace_960add2456a14884ae666b07a447e9b9.bytes slowcoord = 0.072
+180 # trace_d4c99468890c4868bb04283aa3508603.bytes slowcoord = 0.108
+181 # trace_105e2182c12345d3911f394c215ee8ad.bytes slowcoord = 0.144
+182 # trace_7d30f983f00a4a5b9fcfd77715b156a0.bytes slowcoord = 0.18
+183 # trace_b8e910e3a95b479686da5f502ec4988b.bytes slowcoord = 0.216
+184 # trace_f4034904e80c4fabb9c45d33af50fae8.bytes slowcoord = 0.252
+185 # trace_b094bedaec4b4624a2afd2a167d14cf5.bytes slowcoord = 0.288
+186 # trace_8691340984ec46a7bb0fe529623970fd.bytes slowcoord = 0.324
+187 # trace_319f77aa4bef4fed9584f1446dd2efbd.bytes slowcoord = 0.36
+188 # trace_824923d16d174948811fb5eaabe0c40e.bytes slowcoord = 0.396
+189 # trace_21128146963443ea824852430ea2e6a7.bytes slowcoord = 0.432
+190 # trace_83a52ffbdf6948bc926d3f8ec47af87f.bytes slowcoord = 0.468
+191 # trace_92254d50a4274403b90728902297ee32.bytes slowcoord = 0.504
+192 # trace_157def84eaff43bd93ef49bd6abdeab3.bytes slowcoord = 0.54
+193 # trace_b555598597a84686b5f0b539e84f5d3c.bytes slowcoord = 0.576
+194 # trace_53ca24130f864a52a5cd786bab00c13f.bytes slowcoord = 0.612
+195 # trace_e5eab2c7b4414983accfad460ae4673a.bytes slowcoord = 0.648
+196 # trace_fb43429e8663435ebbe91748d8191a37.bytes slowcoord = 0.684
+197 # trace_c6aa5f62bd8940b299fbda6113d45d42.bytes slowcoord = 0.72
+198 # trace_0f1308317fa94e0289095ccebe9c974a.bytes slowcoord = 0.756
+199 # trace_0f10745e089e4b3ab4950dc47861f986.bytes slowcoord = 0.792
+200 # trace_5e9ccabcdba84e4bb56d2c0f6765ed60.bytes slowcoord = 0.828
+201 # trace_285d0c9e521a4c4cb38e30f09a0d4086.bytes slowcoord = 0.864
+202 # trace_9c5c6544f39d48208a658f83fca4dcfb.bytes slowcoord = 0.9
+203 
+204 
+205 
+206 
+207 # Check if the qt terminal is available.
+208 if (strstrt(GPVAL_TERMINALS, 'qt') > 0) interactive_terminal = "qt"; \
+209 else interactive_terminal = "wxt enhanced"
+210 
+211 set term @interactive_terminal size figwidth,figheight title "Transmission vs f and B" dashed
+212 # replace "dashed" with "solid" if you want to ignore "linetype"/"lt" in plot
+213 
+214 replot
+215 bind Close "exit gnuplot"
+216 
+217 
+---end of Transmission_vs_f_and_B.gnuplot---
+
+Replotting every 1 seconds (if plot script modification time changes)...
+Hit <ctrl> + C to exit.
+The plot engine has terminated. Exiting.
