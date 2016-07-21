@@ -1,0 +1,19 @@
+{% if traces %}
+
+{% if plot_in_panels %}
+unset multiplot
+{% endif %}
+
+{% if global_opts.show_on_screen %}
+# Check if the qt terminal is available.
+if (strstrt(GPVAL_TERMINALS, 'qt') > 0) interactive_terminal = "qt"; \
+else interactive_terminal = "wxt enhanced"
+
+set term @interactive_terminal size figwidth,figheight {% if global_opts.title %}title "{{ global_opts.title }}"{% endif %} dashed
+# replace "dashed" with "solid" if you want to ignore "linetype"/"lt" in plot
+
+replot
+bind Close "exit gnuplot"
+{% endif %}
+
+{% endif %}

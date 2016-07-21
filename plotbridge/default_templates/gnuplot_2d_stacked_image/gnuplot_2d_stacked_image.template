@@ -1,0 +1,42 @@
+{% include 'gnuplot_header.template_fragment' %}
+
+{% if global_opts.zlabel %}set cblabel "{{ global_opts.zlabel }}"
+{% endif %}
+
+{% if not global_opts.zrange|allnone %}set cbrange [{{ global_opts.zrange[0]|ifnone('') }}:{{ global_opts.zrange[1]|ifnone('') }}]
+{% endif %}
+
+{% if global_opts.zlog %}set logscale cb
+{% endif %}
+
+{% if global_opts.zlog %}
+set format cb "10^{\%L}"  # for 10^x format (for log scale)
+#set cbtics add ("1" 1)   # replace 10^0 by 1
+{% endif %}
+
+
+{% if traces %}
+#set pm3d
+set pm3d map # map projects the 3D surface onto the xy plane
+set pm3d corners2color c1 # comment this out to take the mean of nearby points instead
+#set pm3d interpolate 2,2
+splot \
+   "image_matrix.gnuplot_binary_matrix" \
+   binary matrix \
+   title ""
+
+# This works well if you have evenly spaced "slow axis" data
+#plot \
+#   "image_matrix.gnuplot_binary_matrix" \
+#   binary matrix with image \
+#   title ""
+
+## List of slow coordinate values (if any)
+{% for trace in traces %}
+{% if trace.slowcoordinate != None %}# {{trace.bytesfile}} slowcoord = {{trace.slowcoordinate / (1 if global_opts.yunits == None else global_opts.yunits)}}
+{% endif %}
+{% endfor %}
+
+{% endif %}
+
+{% include 'gnuplot_footer.template_fragment' %}

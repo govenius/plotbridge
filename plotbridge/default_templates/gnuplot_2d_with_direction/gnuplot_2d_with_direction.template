@@ -1,0 +1,29 @@
+{% include 'gnuplot_header.template_fragment' %}
+
+{% if traces %}
+plot \
+{% for trace in traces %}
+   "{{'vectorized_'+trace.bytesfile}}" using (column(1)/x{{'2' if trace.top else ''}}units):(column(2)/y{{'2' if trace.right else ''}}units):(column(3)/x{{'2' if trace.top else ''}}units):(column(4)/y{{'2' if trace.right else ''}}units) every ::0:0 \
+   binary format='{% for col in trace.recordformat %}%{{col}}%{{col}}{% endfor %}' \
+   with vectors head filled \
+{% if trace.color!=None %}
+  {% if trace.color|isint %}
+   linecolor {{ trace.color }} \
+  {% else %}
+   linecolor rgb "{{ trace.color }}" \
+  {% endif %}
+{% else %}
+   linecolor {{ loop.index }} \
+{% endif %}
+   linetype {{ trace.linetype|ifnone(1) }} \
+{% if trace.linewidth!=None %}
+   linewidth {{ trace.linewidth }} \
+{% endif %}
+   title "{{ trace.title|ifnone('') }}" \
+   axes {{'x2' if trace.top else 'x1'}}{{'y2' if trace.right else 'y1'}}{% if not loop.last %}, \
+{% endif %}
+{% endfor %}
+
+{% endif %}
+
+{% include 'gnuplot_footer.template_fragment' %}

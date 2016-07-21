@@ -1,0 +1,2 @@
+recursive-include plotbridge *.py *.preprocess *.template *.cfg
+recursive-include plotbridge *.template_fragment

@@ -1,0 +1,192 @@
+{#
+This template uses Jinja2. See http://jinja.pocoo.org/docs/templates/ for syntax.
+
+See plotbridge/docs for information about available template variables.
+The variables have been chosen with gnuplot in mind, but it should be straightforward to map them
+to corresponding values used in other tools (Matlab, matplotlib, Mathematica, Origin, etc.).
+If necessary, you can use the .preprocess python script to preprocess the trace data files into whatever
+format is most easily read by your plotting tool.
+#}
+#!/usr/bin/gnuplot
+#
+# This file was generated from {{ self }}.
+#
+
+set macro
+
+figwidth = {% if global_opts.width %}{{ global_opts.width }}{% else %}800
+{% endif %}
+
+figheight = {% if global_opts.height %}{{ global_opts.height }}{% else %}600
+{% endif %}
+
+dpi = 72. # This affects only the figure size and panel placement computations,
+          # not the actual DPI values set in the output files
+figwidth_in_inches = figwidth/dpi
+figheight_in_inches = figheight/dpi
+
+################################################################################################
+# This multiplot layout code is adapted from http://www.sciencetronics.com/greenphotons/?p=570
+# as an alternative to "set multiplot layout rows,cols".
+# Original by Uwe Zimmermann, 2011 (CC BY-NC-SA 3.0).
+mpl_top    = 0.4 #inch  outer top margin, title goes here
+mpl_bot    = 0.5 #inch  outer bottom margin, x label goes here
+mpl_left   = 1.0 #inch  outer left margin, y label goes here
+mpl_right  = 0.02 #inch  outer right margin, y2 label goes here
+mpl_dx     = 0.05 #inch  inter-plot horizontal spacing
+mpl_dy     = 0.05 #inch  inter-plot vertical spacing
+mpl_ny     = {{ 1 + (traces|selectattr("right")|list|length > 0)|int }}   #number of rows
+mpl_nx     = {{ 1 + (traces|selectattr("top")|list|length > 0)|int }}   #number of columns
+
+# calculate remaining free dimensions
+mpl_width = ( figwidth_in_inches \
+              - mpl_left - mpl_right \
+              - (mpl_nx-1)*mpl_dx )/mpl_nx # width of individual plots
+mpl_height = ( figheight_in_inches \
+              - mpl_top - mpl_bot \
+              - (mpl_ny-1)*mpl_dy )/mpl_ny # height of individual plots
+
+# placement functions
+#   rows are numbered from bottom to top
+mpl_bot(n) = (mpl_bot+(n-1)*mpl_height+(n-1)*mpl_dy)/figheight_in_inches
+mpl_top(n)  = 1-((mpl_top+(mpl_ny-n)*(mpl_height+mpl_dy))/figheight_in_inches)
+#   columns are numbered from left to right
+mpl_left(n) = (mpl_left+(n-1)*mpl_width+(n-1)*mpl_dx)/figwidth_in_inches
+mpl_right(n)  = 1-((mpl_right+(mpl_nx-n)*(mpl_width+mpl_dx))/figwidth_in_inches)
+
+mpl_set_panel(row, col) = sprintf("set lmargin at screen mpl_left(%d); \
+                                   set rmargin at screen mpl_right(%d); \
+                                   set tmargin at screen mpl_top(%d); \
+                                   set bmargin at screen mpl_bot(%d)", \
+                                   col, col, row, row)
+
+# End of multiplot layout helper definitions.
+# To set a panel, use "eval mpl_set_panel(row, column)"
+################################################################################################
+
+basefont = "Times,{% if global_opts.basefontsize %}{{ global_opts.basefontsize }}{% else %}{% endif %}"
+
+baselinewidth = 1.
+
+unset multiplot
+{% if global_opts.export_format.lower() == 'png' %}
+
+pngdpi_per_screendpi = 96./72
+figwidthinpng = ceil(figwidth*pngdpi_per_screendpi)
+figheightinpng = ceil(figheight*pngdpi_per_screendpi)
+set terminal pngcairo size figwidthinpng,figheightinpng enhanced \
+    font basefont linewidth baselinewidth
+set output "output.png"
+
+{% elif global_opts.export_format.lower() in ['eps', 'pdf'] %}
+
+set terminal epslatex size figwidth_in_inches,figheight_in_inches color colortext standalone \
+    font basefont linewidth baselinewidth \
+    header "\\newcommand{\\ft}[0]{\\footnotesize}"
+set output "output.tex"
+
+{% endif %}
+
+
+{% if global_opts.xlabel %}set xlabel "{{ global_opts.xlabel }}"
+{% endif %}
+{% if global_opts.x2label %}set x2label "{{ global_opts.x2label }}"
+{% endif %}
+{% if global_opts.ylabel %}set ylabel "{{ global_opts.ylabel }}"
+{% endif %}
+{% if global_opts.y2label %}set y2label "{{ global_opts.y2label }}"
+{% endif %}
+{% if global_opts.zlabel %}set zlabel "{{ global_opts.zlabel }}"
+{% endif %}
+{% if global_opts.cblabel %}set cblabel "{{ global_opts.cblabel }}"
+{% endif %}
+
+{% if global_opts.xlog %}set logscale x
+{% endif %}
+{% if global_opts.x2log %}set logscale x2
+{% endif %}
+{% if global_opts.ylog %}set logscale y
+{% endif %}
+{% if global_opts.y2log %}set logscale y2
+{% endif %}
+{% if global_opts.zlog %}set logscale z
+{% endif %}
+{% if global_opts.cblog %}set logscale cb
+{% endif %}
+{% if global_opts.grid %}set grid
+{% else %}unset grid
+{% endif %}
+
+{% if not global_opts.xrange|allnone %}set xrange [{{ global_opts.xrange[0]|ifnone('') }}:{{ global_opts.xrange[1]|ifnone('') }}]
+{% endif %}
+{% if not global_opts.x2range|allnone %}set x2range [{{ global_opts.x2range[0]|ifnone('') }}:{{ global_opts.x2range[1]|ifnone('') }}]
+{% endif %}
+{% if not global_opts.yrange|allnone %}set yrange [{{ global_opts.yrange[0]|ifnone('') }}:{{ global_opts.yrange[1]|ifnone('') }}]
+{% endif %}
+{% if not global_opts.y2range|allnone %}set y2range [{{ global_opts.y2range[0]|ifnone('') }}:{{ global_opts.y2range[1]|ifnone('') }}]
+{% endif %}
+{% if not global_opts.zrange|allnone %}set zrange [{{ global_opts.zrange[0]|ifnone('') }}:{{ global_opts.zrange[1]|ifnone('') }}]
+{% endif %}
+
+{% if global_opts.title != None %}set title "{{ global_opts.title }}"
+{% endif %}
+
+###
+# Some common formatting
+###
+
+# Tick formatting
+#set format x "%.2g"
+
+### Ticks ###
+
+#set xtics 12.5,2,300 # for log scale
+#set xtics 0,50,300 # for linear scale
+#set xtics add ("200" 200)
+#set mxtics 5
+
+
+{% if global_opts.ylog %}
+set format y "10^{\%L}"  # for 10^x format (for log scale)
+set ytics add ("1" 1)   # replace 10^0 by 1
+{% endif %}
+{% if global_opts.zlog %}
+set format z "10^{\%L}"  # for 10^x format (for log scale)
+set ztics add ("1" 1)   # replace 10^0 by 1
+{% endif %}
+{% if global_opts.cblog %}
+set format cb "10^{\%L}"  # for 10^x format (for log scale)
+#set cbtics add ("1" 1)   # replace 10^0 by 1
+{% endif %}
+
+### For histograms ###
+#set boxwidth 0.025
+#set style fill transparent solid 0.5 noborder
+
+### Annotation ###
+
+# basic
+#set label "label A"  at first  30, first  60   # in data coordinates
+
+# more options
+#set label "{/Arial-Bold label B}"  at graph  0.9, graph  0.72 \
+#                                   rotate by 8 left \
+#                                   tc rgb "#777777"
+
+# legend position
+#set key out vert # place legends outside the plot area
+#set key cent right
+#set key left top
+#set key above title "Legend" box 3
+set key {% if 'key' in global_opts.other.keys() %}{{global_opts.other['key']}}{% else %}right bottom{% endif %}
+
+{% if traces_right|length %}
+set ytics nomirror
+set y2tics
+{% endif %}
+
+xunits = {{ 1 if global_opts.xunits == None else global_opts.xunits }}
+x2units = {{ 1 if global_opts.x2units == None else global_opts.x2units }}
+yunits = {{ 1 if global_opts.yunits == None else global_opts.yunits }}
+y2units = {{ 1 if global_opts.y2units == None else global_opts.y2units }}
+zunits = {{ 1 if global_opts.zunits == None else global_opts.zunits }}

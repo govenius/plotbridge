@@ -1,0 +1,42 @@
+{% include 'gnuplot_header.template_fragment' %}
+
+### For histograms ###
+#set boxwidth 0.1 # set the bar width manually
+set style fill transparent solid 0.9 noborder
+
+
+{% if traces %}
+plot \
+{% for trace in traces %}
+   "{{trace.bytesfile}}" using (column(1)/x{{'2' if trace.top else ''}}units):(column(2)/y{{'2' if trace.right else ''}}units){% if trace.yerrorcol %}:(column({{1+trace.yerrorcol}})/y{{'2' if trace.right else ''}}units){% endif %} every ::0:0 \
+   binary format='{% for col in trace.recordformat %}%{{col}}{% endfor %}' \
+   with boxes \
+{% if trace.color!=None %}
+  {% if trace.color|isint %}
+   linecolor {{ trace.color }} \
+  {% else %}
+   linecolor rgb "{{ trace.color }}" \
+  {% endif %}
+{% else %}
+   linecolor {{ loop.index }} \
+{% endif %}
+{% if trace.points %}
+   pointtype {{ trace.pointtype|ifnone(7) }} \
+{% endif %}
+{% if trace.pointsize!=None and trace.points %}
+   pointsize {{ trace.pointsize }} \
+{% endif %}
+{% if trace.lines %}
+   linetype {{ trace.linetype|ifnone(1) }} \
+{% endif %}
+{% if trace.linewidth!=None and trace.lines %}
+   linewidth {{ trace.linewidth }} \
+{% endif %}
+   title "{{ trace.title|ifnone('') }}" \
+   axes {{'x2' if trace.top else 'x1'}}{{'y2' if trace.right else 'y1'}}{% if not loop.last %}, \
+{% endif %}
+{% endfor %}
+
+{% endif %}
+
+{% include 'gnuplot_footer.template_fragment' %}

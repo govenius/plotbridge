@@ -1,0 +1,40 @@
+{% include 'gnuplot_header.template_fragment' %}
+
+{% if traces %}
+splot \
+{% for trace in traces %}
+   "{{trace.bytesfile}}" using (column(1)/x{{'2' if trace.top else ''}}units):(column(2)/y{{'2' if trace.right else ''}}units):(column(3)/zunits) every ::0:0 \
+   binary format='{% for col in trace.recordformat %}%{{col}}{% endfor %}' \
+   with {% if trace.yerrorcol %}
+           {%- if trace.lines %}errorlines{% else %}yerrorbars{% endif %}
+        {% else %}
+           {%- if trace.lines %}lines{% endif %}{% if trace.points or not trace.lines %}points{% endif %}{#<-- use points if neither lines nor points is specified.#}
+        {%- endif %} \
+{% if trace.color!=None %}
+  {% if trace.color|isint %}
+   linecolor {{ trace.color }} \
+  {% else %}
+   linecolor rgb "{{ trace.color }}" \
+  {% endif %}
+{% else %}
+   linecolor {{ loop.index }} \
+{% endif %}
+{% if trace.points %}
+   pointtype {{ trace.pointtype|ifnone(7) }} \
+{% endif %}
+{% if trace.pointsize!=None and trace.points %}
+   pointsize {{ trace.pointsize }} \
+{% endif %}
+{% if trace.lines %}
+   linetype {{ trace.linetype|ifnone(1) }} \
+{% endif %}
+{% if trace.linewidth!=None and trace.lines %}
+   linewidth {{ trace.linewidth }} \
+{% endif %}
+   title "{{ trace.title|ifnone('') }}"{% if not loop.last %}, \
+{% endif %}
+{% endfor %}
+
+{% endif %}
+
+{% include 'gnuplot_footer.template_fragment' %}
