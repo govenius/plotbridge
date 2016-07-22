@@ -1,3 +1,2 @@
-setuptools
 numpy
 jinja2
