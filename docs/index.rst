@@ -261,12 +261,13 @@ Plotbridge is used (at least) in:
   `Phys. Rev. Lett. 117, 030802, (2016)
   <http://dx.doi.org/10.1103/PhysRevLett.117.030802>`_ (open access).
 
-Other content in this manual
+Content in this manual
 ----------------------------
 
 .. toctree::
     :maxdepth: 2
 
+    Overview <self>
     examples
     install
     api
