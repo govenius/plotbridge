@@ -1,10 +1,13 @@
 Installation
 ============
 
-Get the latest version from `qithub <https://github.com/govenius/>`_
-and run::
+Get the latest version from `qithub
+<https://github.com/govenius/plotbridge>`_, make sure you have the
+:ref:`required packages <requirements>` installed, and run::
 
   python setup.py install --user
+
+.. _requirements:
 
 Requirements
 ------------
@@ -14,13 +17,14 @@ Besides the template-specific plot engine (e.g., `gnuplot
 
   * `NumPy <http://www.numpy.org/>`_
   * `Jinja2 <http://jinja.pocoo.org/>`_ (>=2.7.2)
+  * `Setuptools <https://setuptools.readthedocs.io/en/latest/>`_
 
 
 Ubuntu/Linux
 ^^^^^^^^^^^^
 On Linux, numpy should be available in your package manager. In Ubuntu 16.04 for example::
 
-  sudo apt-get install python-numpy python-jinja2
+  sudo apt-get install python-numpy python-jinja2 python-setuptools
 
 And for Gnuplot::
 
