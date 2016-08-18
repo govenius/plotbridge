@@ -88,8 +88,10 @@ x_max = max( t['trace_data'][:,0].max() for t in all_traces )
 
 # Figure out the smallest division dx in the x direction,
 def smallest_division(trace_data):
-  if len(trace_data) < 2: return np.inf
-  a = np.abs(np.diff(trace_data[:,0]))
+  m = ~np.isnan(trace_data[:,1])
+  if len(trace_data[m]) < 2: return np.inf
+  a = np.abs(np.diff(trace_data[m,0]))
+  if len(a[a>0]) < 1: return np.inf
   return a[a>0].min()
 
 dx = min( smallest_division(t['trace_data']) for t in all_traces )
