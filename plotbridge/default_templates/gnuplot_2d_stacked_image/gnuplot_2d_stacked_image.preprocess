@@ -151,10 +151,11 @@ with open(output_fname + tmp_ext, 'wb') as fout:
 
   # following lines consist of xi, <zi,0>, <zi,1>, ...
   fmt = '<f%uf' % img.shape[1]
+  heights = [dy] if len(all_traces) == 1 else np.diff([ all_traces[j]['slowcoord'] for j in range(len(all_traces)) ])
   for j in range(len(all_traces)):
     # Write each row twice. Otherwise pm3d doesn't plot isolated rows surrounded by NaNs
     fout.write(struct.pack(fmt, all_traces[j]['slowcoord'], *(img[j,:]/zunits) ))
-    fout.write(struct.pack(fmt, all_traces[j]['slowcoord'] + dy/2., *(img[j,:]/zunits) ))
+    fout.write(struct.pack(fmt, all_traces[j]['slowcoord'] + 0.9999*heights[min(j,len(heights)-1)], *(img[j,:]/zunits) ))
 
 # Overwrite the old file atomically
 shutil.move(output_fname + tmp_ext, output_fname)
