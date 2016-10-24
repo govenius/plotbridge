@@ -180,7 +180,7 @@ set format cb "10^{\%L}"  # for 10^x format (for log scale)
 #set key above title "Legend" box 3
 set key {% if 'key' in global_opts.other.keys() %}{{global_opts.other['key']}}{% else %}right bottom{% endif %}
 
-{% if traces_right|length %}
+{% if traces|selectattr("right")|list|length %}
 set ytics nomirror
 set y2tics
 {% endif %}
