@@ -62,7 +62,8 @@ assert np.isscalar(zunits), "Couldn't parse the z units from the .gnuplot file."
 # and they are all different.
 ntraces_with_slow_coord = np.sum([ 'slowcoord' in t.keys() for t in all_traces ])
 unique_slow_coords = len(np.unique([ t['slowcoord'] for t in all_traces if 'slowcoord' in t.keys() ]))
-if ntraces_with_slow_coord != len(all_traces) or unique_slow_coords != len(all_traces):
+
+if ntraces_with_slow_coord != len(all_traces):
   # otherwise fall back to ordering by modification time (and using trace index as slow coordinate)
   # TODO: this can lead to confusing ordering if traces were added so quickly
   #       that modification timestamps are indentical...
@@ -73,9 +74,10 @@ if ntraces_with_slow_coord != len(all_traces) or unique_slow_coords != len(all_t
     if ntraces_with_slow_coord != len(all_traces):
       logging.warn('Only %d of %d traces have a slow coordinate specified. Falling back to trace number.',
                    ntraces_with_slow_coord, len(all_traces) )
-    if unique_slow_coords != len(all_traces):
-      logging.warn('Only %d of %d slow coordinates are unique. Falling back to trace number.',
-                   unique_slow_coords, len(all_traces) )
+
+if unique_slow_coords < len(all_traces):
+  logging.warn('Only %d of %d slow coordinates are unique. Traces may overwrite each other.',
+               unique_slow_coords, len(all_traces) )
 
 # Sort the traces by slow value
 all_traces = sorted(all_traces, key=lambda t: t['slowcoord'])
@@ -135,8 +137,12 @@ for i,t in enumerate(all_traces):
 horizontal_axis_vals = ( x_min + dx*np.arange(ncols) )/xunits
 
 # Figure out the smallest division dy in the y direction,
-dy = ( np.abs(np.diff(np.array([ t['slowcoord'] for t in all_traces ]))).min()
-       if len(all_traces) > 1 else 1. )
+unique_slow_coords = np.unique(np.array([ t['slowcoord'] for t in all_traces ]))
+slow_coord_diff = np.diff( unique_slow_coords )
+def pixel_height(y):
+  if len(all_traces) == 1: return 1.
+  if y == unique_slow_coords[-1]: return slow_coord_diff[-1]
+  return slow_coord_diff[np.abs(unique_slow_coords - y).argmin()]
 
 output_fname = 'image_matrix.gnuplot_binary_matrix'
 tmp_ext = uuid.uuid4().hex
@@ -148,11 +154,11 @@ with open(output_fname + tmp_ext, 'wb') as fout:
 
   # following lines consist of xi, <zi,0>, <zi,1>, ...
   fmt = '<f%uf' % img.shape[1]
-  heights = [dy] if len(all_traces) == 1 else np.diff([ all_traces[j]['slowcoord'] for j in range(len(all_traces)) ])
   for j in range(len(all_traces)):
     # Write each row twice. Otherwise pm3d doesn't plot isolated rows surrounded by NaNs
-    fout.write(struct.pack(fmt, all_traces[j]['slowcoord'], *(img[j,:]/zunits) ))
-    fout.write(struct.pack(fmt, all_traces[j]['slowcoord'] + 0.9999*heights[min(j,len(heights)-1)], *(img[j,:]/zunits) ))
+    y = all_traces[j]['slowcoord']
+    fout.write(struct.pack(fmt, y, *(img[j,:]/zunits) ))
+    fout.write(struct.pack(fmt, y + 0.9999*pixel_height(y), *(img[j,:]/zunits) ))
 
 # Overwrite the old file atomically
 shutil.move(output_fname + tmp_ext, output_fname)
