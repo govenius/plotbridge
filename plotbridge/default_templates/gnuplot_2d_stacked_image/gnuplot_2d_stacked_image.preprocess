@@ -75,7 +75,7 @@ if ntraces_with_slow_coord != len(all_traces):
       logging.warn('Only %d of %d traces have a slow coordinate specified. Falling back to trace number.',
                    ntraces_with_slow_coord, len(all_traces) )
 
-if unique_slow_coords < len(all_traces):
+if ntraces_with_slow_coord > 0 and unique_slow_coords < len(all_traces):
   logging.warn('Only %d of %d slow coordinates are unique. Traces may overwrite each other.',
                unique_slow_coords, len(all_traces) )
 
