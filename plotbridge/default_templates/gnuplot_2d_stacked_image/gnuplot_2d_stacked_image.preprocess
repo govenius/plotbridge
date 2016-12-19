@@ -140,7 +140,7 @@ horizontal_axis_vals = ( x_min + dx*np.arange(ncols) )/xunits
 unique_slow_coords = np.unique(np.array([ t['slowcoord'] for t in all_traces ]))
 slow_coord_diff = np.diff( unique_slow_coords )
 def pixel_height(y):
-  if len(all_traces) == 1: return 1.
+  if len(slow_coord_diff) == 0: return 1.
   if y == unique_slow_coords[-1]: return slow_coord_diff[-1]
   return slow_coord_diff[np.abs(unique_slow_coords - y).argmin()]
 
