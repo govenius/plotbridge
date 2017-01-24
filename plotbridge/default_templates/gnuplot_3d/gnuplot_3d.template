@@ -27,6 +27,7 @@ splot \
 {% endif %}
 {% if trace.lines %}
    linetype {{ trace.linetype|ifnone(1) }} \
+   dashtype {{ trace.linetype|ifnone(1) }} \
 {% endif %}
 {% if trace.linewidth!=None and trace.lines %}
    linewidth {{ trace.linewidth }} \

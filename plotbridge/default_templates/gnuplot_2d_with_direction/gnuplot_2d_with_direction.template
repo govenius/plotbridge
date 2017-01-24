@@ -16,6 +16,7 @@ plot \
    linecolor {{ loop.index }} \
 {% endif %}
    linetype {{ trace.linetype|ifnone(1) }} \
+   dashtype {{ trace.linetype|ifnone(1) }} \
 {% if trace.linewidth!=None %}
    linewidth {{ trace.linewidth }} \
 {% endif %}
