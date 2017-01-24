@@ -69,6 +69,8 @@ basefont = "Times,{% if global_opts.basefontsize %}{{ global_opts.basefontsize }
 baselinewidth = 1.
 
 unset multiplot
+
+{% set use_latex = False %}
 {% if global_opts.export_format.lower() == 'png' %}
 
 pngdpi_per_screendpi = 96./72
@@ -84,6 +86,7 @@ set terminal epslatex size figwidth_in_inches,figheight_in_inches color colortex
     font basefont linewidth baselinewidth \
     header "\\newcommand{\\ft}[0]{\\footnotesize}"
 set output "output.tex"
+{% set use_latex = True %}
 
 {% endif %}
 
@@ -145,17 +148,17 @@ set output "output.tex"
 #set xtics add ("200" 200)
 #set mxtics 5
 
-
+logformat = "{{ '$10^{\\%L}$' if use_latex else '10^{\\%L}' }}"
 {% if global_opts.ylog %}
-set format y "10^{\%L}"  # for 10^x format (for log scale)
+set format y logformat  # for 10^x format (for log scale)
 set ytics add ("1" 1)   # replace 10^0 by 1
 {% endif %}
 {% if global_opts.zlog %}
-set format z "10^{\%L}"  # for 10^x format (for log scale)
+set format z logformat  # for 10^x format (for log scale)
 set ztics add ("1" 1)   # replace 10^0 by 1
 {% endif %}
 {% if global_opts.cblog %}
-set format cb "10^{\%L}"  # for 10^x format (for log scale)
+set format cb logformat  # for 10^x format (for log scale)
 #set cbtics add ("1" 1)   # replace 10^0 by 1
 {% endif %}
 
