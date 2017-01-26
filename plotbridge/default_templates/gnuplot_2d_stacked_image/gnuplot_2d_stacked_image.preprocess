@@ -9,6 +9,7 @@ import os
 import sys
 import time
 import logging
+logging.basicConfig(format="%(filename)s:%(lineno)s %(message)s", level=logging.INFO)
 import numpy as np
 import struct
 import shutil
@@ -102,7 +103,7 @@ ncols = 1 + int(np.ceil( (x_max - x_min) / dx ))
 
 # Allocate the "image" matrix for storing all traces.
 img = np.zeros((2*len(all_traces), ncols), dtype=np.float) + np.nan
-logging.info('Output image size: %s', img.shape)
+logging.info('Output image size = %s. x = arange(%e, %e, %e)', img.shape, x_min, x_max, dx)
 
 # Fill it with the nearest value (in x) for each pixel.
 # Leave parts outside the domain of each trace as np.nan
