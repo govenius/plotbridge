@@ -153,6 +153,10 @@ logformat = "{{ '$10^{\\%L}$' if use_latex else '10^{\\%L}' }}"
 set format y logformat  # for 10^x format (for log scale)
 set ytics add ("1" 1)   # replace 10^0 by 1
 {% endif %}
+{% if global_opts.y2log %}
+set format y2 logformat  # for 10^x format (for log scale)
+set y2tics add ("1" 1)   # replace 10^0 by 1
+{% endif %}
 {% if global_opts.zlog %}
 set format z logformat  # for 10^x format (for log scale)
 set ztics add ("1" 1)   # replace 10^0 by 1
