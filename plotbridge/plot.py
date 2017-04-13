@@ -812,7 +812,7 @@ class Plot():
     else:
       raise Exception("Input matrix is more than 2D. Don't know how to interpret it.")
 
-    if yerr != None:
+    if isinstance(yerr, np.ndarray) or yerr != None: # The first condition is here just to avoid a future warning about comparing ndarrays to None.
       yerr1d = np.zeros(len(dd), dtype=np.float) + np.nan
       try: # whether a single scalar
         yerr1d[:] = float(yerr)
