@@ -144,8 +144,9 @@ class Plot():
     if not path_friendly:
       return self._name
     else:
+      def acceptable_char(x): return x.isalnum() or x in ['#', '-', '=']
       # leave out non-alphanumeric characters
-      return "".join(x if x.isalnum() else '_' for x in self._name)
+      return "".join(x if acceptable_char(x) else '_' for x in self._name)
 
   def get_output_dir(self):
     '''Get output dir name.'''
