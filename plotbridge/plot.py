@@ -715,9 +715,13 @@ class Plot():
 
     if update: self.update()
 
-  def get_ntraces(self):
-    ''' Number of traces. '''
-    return len(self._traces)
+  def get_ntraces(self, left=True, right=True):
+    ''' Number of traces. Count trace on left and/or right y-axis.'''
+    on_right_axis = np.array([ t['right']==True for t in self._traces.values() ], dtype=np.bool)
+    n = 0
+    if right: n += on_right_axis.sum()
+    if left: n += (~on_right_axis).sum()
+    return n
 
   ##############
   #
