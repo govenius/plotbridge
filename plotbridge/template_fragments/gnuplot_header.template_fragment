@@ -90,6 +90,9 @@ set output "output.tex"
 
 {% endif %}
 
+{% set y2labelcolor = global_opts.other|defaultget('y2label_color', 'black') %}
+{% set y2labelcolor = "textcolor " + (y2labelcolor if y2labelcolor|isint else 'rgb "%s"' % y2labelcolor) %}
+
 
 {% if global_opts.xlabel %}set xlabel "{{ global_opts.xlabel }}"
 {% endif %}
@@ -97,7 +100,7 @@ set output "output.tex"
 {% endif %}
 {% if global_opts.ylabel %}set ylabel "{{ global_opts.ylabel }}"
 {% endif %}
-{% if global_opts.y2label %}set y2label "{{ global_opts.y2label }}"
+{% if global_opts.y2label %}set y2label "{{ global_opts.y2label }}" {{y2labelcolor}}
 {% endif %}
 {% if global_opts.zlabel %}set zlabel "{{ global_opts.zlabel }}"
 {% endif %}
@@ -189,7 +192,7 @@ set key {% if 'key' in global_opts.other.keys() %}{{global_opts.other['key']}}{%
 
 {% if traces|selectattr("right")|list|length %}
 set ytics nomirror
-set y2tics
+set y2tics {{y2labelcolor}}
 {% endif %}
 
 xunits = {{ 1 if global_opts.xunits == None else global_opts.xunits }}
