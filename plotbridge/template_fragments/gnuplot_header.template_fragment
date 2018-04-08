@@ -159,6 +159,10 @@ set linetype 5 linecolor rgb "red"
 {% endif %}
 
 logformat = "{{ '$10^{\\%L}$' if use_latex else '10^{\\%L}' }}"
+{% if global_opts.xlog %}
+#set format x logformat  # for 10^x format (for log scale)
+#set xtics add ("1" 1)   # replace 10^0 by 1
+{% endif %}
 {% if global_opts.ylog %}
 set format y logformat  # for 10^x format (for log scale)
 set ytics add ("1" 1)   # replace 10^0 by 1
