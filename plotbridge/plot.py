@@ -112,7 +112,7 @@ class Plot():
     if os.path.exists(d):
 
       self._output_dir = d
-      logging.warn('Removing contents of old "%s"', d)
+      logging.info('Removing contents of old "%s"', d)
       try:
         for f in os.listdir(d):
           if f.endswith('.lock'): continue # don't remove lock files
@@ -570,6 +570,7 @@ class Plot():
                 top=False,
                 other=None,
                 update=False,
+                sort=None,
                 x_plot_units=None, y_plot_units=None, # deprecated
               ):
     '''
@@ -590,6 +591,7 @@ class Plot():
     :param top:  use the second x-axis (bottom = first x-axis)
     :param other:  template-specific per-trace options (as a dictionary)
     :param update:  regenerate the plot script?
+    :param sort:  if 'x' or 'y', sort the added points according to x or y first.
     :param x_plot_units:  **depracated**, use set_x_units()
     :param y_plot_units:  **depracated**, use set_y_units()
 
@@ -634,17 +636,18 @@ class Plot():
       }
 
     # Generate the binary data file
-    self.update_trace(trace_id, x, y, yerr, update=update)
+    self.update_trace(trace_id, x, y, yerr, update=update, sort=sort)
 
     return trace_id
 
-  def update_trace(self, trace_id, x, y=None, yerr=None, update=False):
+  def update_trace(self, trace_id, x, y=None, yerr=None, update=False, sort=None):
     '''
     Update data points of the specified trace.
 
     :param trace_id: the identifier returned by :meth:`add_trace`
     :param x,y,yerr:  see :meth:`add_trace`
     :param update:  regenerate the plot script?
+    :param sort:  sort the values according to 'x' or 'y'
 
     Note: Trace options cannot be updated after the initial :meth:`add_trace`.
     '''
@@ -654,6 +657,13 @@ class Plot():
     trace = self._traces[trace_id]
 
     dd, yerr_column = self._convert_trace_input_to_list_of_tuples(x, y, yerr)
+
+    if sort != None:
+      if   sort == 'x':  m = dd[:,0].argsort()
+      elif sort == 'y':  m = dd[:,1].argsort()
+      else: raise Exception('Only "x" and "y" are valid options for sort. Got "%s".' % sort)
+      dd = dd[m]
+      if isinstance(yerr_column, np.ndarray): yerr_column = yerr_column[m]
 
     # Drop specified points
     crop = trace['crop']
