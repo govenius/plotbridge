@@ -153,6 +153,10 @@ set linetype 5 linecolor rgb "red"
 #set xtics 0,50,300 # for linear scale
 #set xtics add ("200" 200)
 #set mxtics 5
+{% if not global_opts.xlog %}set mxtics
+{% endif %}
+{% if not global_opts.ylog %}set mytics
+{% endif %}
 
 logformat = "{{ '$10^{\\%L}$' if use_latex else '10^{\\%L}' }}"
 {% if global_opts.ylog %}
@@ -196,6 +200,7 @@ set key {% if 'key' in global_opts.other.keys() %}{{global_opts.other['key']}}{%
 {% if traces|selectattr("right")|list|length %}
 set ytics nomirror
 set y2tics {{y2labelcolor}}
+{% if not global_opts.y2log %}set my2tics{% endif %}
 {% endif %}
 
 xunits = {{ 1 if global_opts.xunits == None else global_opts.xunits }}
