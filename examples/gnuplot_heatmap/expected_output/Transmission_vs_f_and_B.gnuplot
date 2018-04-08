@@ -57,12 +57,14 @@ baselinewidth = 1.
 
 unset multiplot
 
+
 pngdpi_per_screendpi = 96./72
 figwidthinpng = ceil(figwidth*pngdpi_per_screendpi)
 figheightinpng = ceil(figheight*pngdpi_per_screendpi)
 set terminal pngcairo size figwidthinpng,figheightinpng enhanced \
     font basefont linewidth baselinewidth
 set output "output.png"
+
 
 
 
@@ -83,6 +85,9 @@ set title "Transmission vs f and B"
 # Some common formatting
 ###
 
+# In the classic color theme, linetype 5 is yellow which is hard to see on a white background.
+set linetype 5 linecolor rgb "red"
+
 # Tick formatting
 #set format x "%.2g"
 
@@ -92,9 +97,11 @@ set title "Transmission vs f and B"
 #set xtics 0,50,300 # for linear scale
 #set xtics add ("200" 200)
 #set mxtics 5
+set mxtics
+set mytics
 
-
-set format z "10^{\%L}"  # for 10^x format (for log scale)
+logformat = "10^{\%L}"
+set format z logformat  # for 10^x format (for log scale)
 set ztics add ("1" 1)   # replace 10^0 by 1
 
 ### For histograms ###
@@ -150,57 +157,57 @@ splot \
 #   title ""
 
 ## List of slow coordinate values (if any)
-# trace_35f49de81c3a4feb8dfa03cebd47c09f.bytes slowcoord = -0.9
-# trace_aaa3a402024f42788ad13ecad91b0ef9.bytes slowcoord = -0.864
-# trace_bf899a6538944631a1d843729814031a.bytes slowcoord = -0.828
-# trace_a8faf7f638eb429183ab4ef38ab0cfc5.bytes slowcoord = -0.792
-# trace_37241f93df8e4353acb7d042061ce9c4.bytes slowcoord = -0.756
-# trace_05e23c24d1874fa3b4968daa98ec5500.bytes slowcoord = -0.72
-# trace_4b9d16e40a8948a5834dca5ecf554d68.bytes slowcoord = -0.684
-# trace_db8576b48a7745459c3115a8e9645740.bytes slowcoord = -0.648
-# trace_93f0d46e4554483fb330c524b754644f.bytes slowcoord = -0.612
-# trace_d9a7e12b42644cccbe65170db7c62a31.bytes slowcoord = -0.576
-# trace_7fdab10a4f5f4c35a4f6190d6f375fb8.bytes slowcoord = -0.54
-# trace_6427733302a848038e4a070e56fc660a.bytes slowcoord = -0.504
-# trace_4387a396301b4edeae225df798ccb87d.bytes slowcoord = -0.468
-# trace_379b42cba1f44c52b1778c54cf86b058.bytes slowcoord = -0.432
-# trace_d0627df3d0c64cd8b801028019dc0297.bytes slowcoord = -0.396
-# trace_c277f8f932de453e992ab8ec15b1bf01.bytes slowcoord = -0.36
-# trace_a501111505d44e6b9fb6ef4e2a72103c.bytes slowcoord = -0.324
-# trace_1347ffbc1cef49cc9f09107fa1a7ee3f.bytes slowcoord = -0.288
-# trace_dada0ad4c8e3458b97241975ffe7c0df.bytes slowcoord = -0.252
-# trace_13a5eeddac944a3ab8d2bcdca93bdba9.bytes slowcoord = -0.216
-# trace_a904128dd5fa4f018d19ae9af9d8b2d4.bytes slowcoord = -0.18
-# trace_88c878166ea346c3963035f282941bcf.bytes slowcoord = -0.144
-# trace_760eca43877041ae9c29601e3666ba93.bytes slowcoord = -0.108
-# trace_91580760b9344b4180faa3fde4f6a405.bytes slowcoord = -0.072
-# trace_8f48be653f464950b3a05889e7f74c5b.bytes slowcoord = -0.036
-# trace_57f86195e64446a8b9e7569fe997f0a9.bytes slowcoord = 0.0
-# trace_412cc6122ba241919e5dacec4b250a56.bytes slowcoord = 0.036
-# trace_960add2456a14884ae666b07a447e9b9.bytes slowcoord = 0.072
-# trace_d4c99468890c4868bb04283aa3508603.bytes slowcoord = 0.108
-# trace_105e2182c12345d3911f394c215ee8ad.bytes slowcoord = 0.144
-# trace_7d30f983f00a4a5b9fcfd77715b156a0.bytes slowcoord = 0.18
-# trace_b8e910e3a95b479686da5f502ec4988b.bytes slowcoord = 0.216
-# trace_f4034904e80c4fabb9c45d33af50fae8.bytes slowcoord = 0.252
-# trace_b094bedaec4b4624a2afd2a167d14cf5.bytes slowcoord = 0.288
-# trace_8691340984ec46a7bb0fe529623970fd.bytes slowcoord = 0.324
-# trace_319f77aa4bef4fed9584f1446dd2efbd.bytes slowcoord = 0.36
-# trace_824923d16d174948811fb5eaabe0c40e.bytes slowcoord = 0.396
-# trace_21128146963443ea824852430ea2e6a7.bytes slowcoord = 0.432
-# trace_83a52ffbdf6948bc926d3f8ec47af87f.bytes slowcoord = 0.468
-# trace_92254d50a4274403b90728902297ee32.bytes slowcoord = 0.504
-# trace_157def84eaff43bd93ef49bd6abdeab3.bytes slowcoord = 0.54
-# trace_b555598597a84686b5f0b539e84f5d3c.bytes slowcoord = 0.576
-# trace_53ca24130f864a52a5cd786bab00c13f.bytes slowcoord = 0.612
-# trace_e5eab2c7b4414983accfad460ae4673a.bytes slowcoord = 0.648
-# trace_fb43429e8663435ebbe91748d8191a37.bytes slowcoord = 0.684
-# trace_c6aa5f62bd8940b299fbda6113d45d42.bytes slowcoord = 0.72
-# trace_0f1308317fa94e0289095ccebe9c974a.bytes slowcoord = 0.756
-# trace_0f10745e089e4b3ab4950dc47861f986.bytes slowcoord = 0.792
-# trace_5e9ccabcdba84e4bb56d2c0f6765ed60.bytes slowcoord = 0.828
-# trace_285d0c9e521a4c4cb38e30f09a0d4086.bytes slowcoord = 0.864
-# trace_9c5c6544f39d48208a658f83fca4dcfb.bytes slowcoord = 0.9
+# trace_864dc67a61b84287a2e0ce3a9ae02c39.bytes slowcoord = -0.9
+# trace_2ff62d2b638f4ef39d9a1c003231a8e2.bytes slowcoord = -0.864
+# trace_516b6c91d8a24b76bc66d574c22e3504.bytes slowcoord = -0.828
+# trace_6ab409361f5f4285b2d8b96a802d4fc3.bytes slowcoord = -0.792
+# trace_5dd49d367d8a42b2be50f85efc544b6b.bytes slowcoord = -0.756
+# trace_f1bfec386862488caa3f1399c1a01dd5.bytes slowcoord = -0.72
+# trace_42c6aaaa961f40eca0bd50d1eb38d699.bytes slowcoord = -0.684
+# trace_d1662072c9434a8ca3cad6b20668b6b7.bytes slowcoord = -0.648
+# trace_05bfcbb5f92c4d2a9bab3b554e3e64b1.bytes slowcoord = -0.612
+# trace_cd27969a8e25421b82ccba19756c9576.bytes slowcoord = -0.576
+# trace_12096e85bee549e38f47d8ddffc1e394.bytes slowcoord = -0.54
+# trace_7dc03c3c5aef4623a06dd778bb422bc3.bytes slowcoord = -0.504
+# trace_c2516dd276b4408e8429c86a1634baf6.bytes slowcoord = -0.468
+# trace_b37c6a8073d44da6a060087554b64604.bytes slowcoord = -0.432
+# trace_be46a647b6de4ca983b330c53cae3555.bytes slowcoord = -0.396
+# trace_b71a1962260e4166b0fefd5304d66e9c.bytes slowcoord = -0.36
+# trace_4ede7feaaa64498e967d60618af23b9d.bytes slowcoord = -0.324
+# trace_feca314264b54e159f772fe2076ea681.bytes slowcoord = -0.288
+# trace_4fe9551e90e044ecb458a32a2fd7e92e.bytes slowcoord = -0.252
+# trace_be63878286634c4397c14e7c4202c091.bytes slowcoord = -0.216
+# trace_927e7cdbfcb848baa87efaf1ddcf8052.bytes slowcoord = -0.18
+# trace_2641622f899042ac87405335f43e0ae9.bytes slowcoord = -0.144
+# trace_9db956dcc9754ba298d4a1e713a35e93.bytes slowcoord = -0.108
+# trace_9752cab43c7b48ffbe20df2145932679.bytes slowcoord = -0.072
+# trace_7d65f7b0e8694cb68c1cdb9dab115ff1.bytes slowcoord = -0.036
+# trace_57561935f6234d2683c3e7e8990fa3a2.bytes slowcoord = 0.0
+# trace_3bf8bce808f6404dae395b2e3da3dcf5.bytes slowcoord = 0.036
+# trace_82f8c04a63c7451bb9d17198c03a6fa6.bytes slowcoord = 0.072
+# trace_93f92332a51d437785490c4f6340da9f.bytes slowcoord = 0.108
+# trace_4a464b0bfe384fbcb96edff867fdf3a9.bytes slowcoord = 0.144
+# trace_5902731819654caea1db8a394347cc0d.bytes slowcoord = 0.18
+# trace_c6f2d4a9141d44d386499731f3d3a0b2.bytes slowcoord = 0.216
+# trace_ad0e6767542a4ec6a734defa68ec82a5.bytes slowcoord = 0.252
+# trace_9e3aa2f92c9e4889ba244e15f958f5ea.bytes slowcoord = 0.288
+# trace_588ff4d3d3de487a96935e767f3b1ed9.bytes slowcoord = 0.324
+# trace_0e8e1ecb36ae4d61850b418c1d9562e3.bytes slowcoord = 0.36
+# trace_2cad5ba4d343458382a0959cf801a6cd.bytes slowcoord = 0.396
+# trace_f21028150dea4fa7b05d61f9246f6a02.bytes slowcoord = 0.432
+# trace_112e4c666d8b4837aea77030fd0badc7.bytes slowcoord = 0.468
+# trace_4adc19db82514407a4bbf4665adaf160.bytes slowcoord = 0.504
+# trace_c204f0c4a0504d28970f398e7b540b8a.bytes slowcoord = 0.54
+# trace_7c86adea703649de819a6f6a5351d07f.bytes slowcoord = 0.576
+# trace_2f5e2c8538f449b4ad56c51ef4ca2d7b.bytes slowcoord = 0.612
+# trace_3a40c7375bbf445f8a1dfe102ebd4474.bytes slowcoord = 0.648
+# trace_0308c05612cb4bfca43e77e448b8e12b.bytes slowcoord = 0.684
+# trace_69b8397f243a4ffcacc7b2dff0a9a61e.bytes slowcoord = 0.72
+# trace_e5d0b58c1d4a4b9cb7580266004f53f6.bytes slowcoord = 0.756
+# trace_b22b71c5237d4b8793c97f63bcd215bc.bytes slowcoord = 0.792
+# trace_8d8eface89684053bc23ffd27294e075.bytes slowcoord = 0.828
+# trace_5558b530580f4026b2b787e14690f033.bytes slowcoord = 0.864
+# trace_511c363b698b4cd9a00641364012f9b0.bytes slowcoord = 0.9
 
 
 

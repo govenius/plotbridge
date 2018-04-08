@@ -57,12 +57,14 @@ baselinewidth = 1.
 
 unset multiplot
 
+
 pngdpi_per_screendpi = 96./72
 figwidthinpng = ceil(figwidth*pngdpi_per_screendpi)
 figheightinpng = ceil(figheight*pngdpi_per_screendpi)
 set terminal pngcairo size figwidthinpng,figheightinpng enhanced \
     font basefont linewidth baselinewidth
 set output "output.png"
+
 
 
 
@@ -79,6 +81,9 @@ set title "spirals"
 # Some common formatting
 ###
 
+# In the classic color theme, linetype 5 is yellow which is hard to see on a white background.
+set linetype 5 linecolor rgb "red"
+
 # Tick formatting
 #set format x "%.2g"
 
@@ -88,8 +93,10 @@ set title "spirals"
 #set xtics 0,50,300 # for linear scale
 #set xtics add ("200" 200)
 #set mxtics 5
+set mxtics
+set mytics
 
-
+logformat = "10^{\%L}"
 
 ### For histograms ###
 #set boxwidth 0.025
@@ -119,19 +126,21 @@ y2units = 1
 zunits = 1
 
 splot \
-   "trace_da501114fd3c4afbb5bbfbf095550d52.bytes" using (column(1)/xunits):(column(2)/yunits):(column(3)/zunits) every ::0:0 \
+   "trace_1a56e544f8d645bf9ce328116a3e9d1c.bytes" using (column(1)/xunits):(column(2)/yunits):(column(3)/zunits) every ::0:0 \
    binary format='%float64%float64%float64' \
    with linespoints \
    linecolor 1 \
    pointtype 7 \
    linetype 1 \
+   dashtype 1 \
    title "", \
-   "trace_181090db1b38467eaf89133b71ac6119.bytes" using (column(1)/xunits):(column(2)/yunits):(column(3)/zunits) every ::0:0 \
+   "trace_fade7788e4d14744a639a40ded0d076e.bytes" using (column(1)/xunits):(column(2)/yunits):(column(3)/zunits) every ::0:0 \
    binary format='%float64%float64%float64' \
    with linespoints \
    linecolor 2 \
    pointtype 7 \
    linetype 1 \
+   dashtype 1 \
    title ""
 
 

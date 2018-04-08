@@ -57,12 +57,14 @@ baselinewidth = 1.
 
 unset multiplot
 
+
 pngdpi_per_screendpi = 96./72
 figwidthinpng = ceil(figwidth*pngdpi_per_screendpi)
 figheightinpng = ceil(figheight*pngdpi_per_screendpi)
 set terminal pngcairo size figwidthinpng,figheightinpng enhanced \
     font basefont linewidth baselinewidth
 set output "output.png"
+
 
 
 
@@ -76,6 +78,9 @@ set title "plot"
 # Some common formatting
 ###
 
+# In the classic color theme, linetype 5 is yellow which is hard to see on a white background.
+set linetype 5 linecolor rgb "red"
+
 # Tick formatting
 #set format x "%.2g"
 
@@ -85,8 +90,10 @@ set title "plot"
 #set xtics 0,50,300 # for linear scale
 #set xtics add ("200" 200)
 #set mxtics 5
+set mxtics
+set mytics
 
-
+logformat = "10^{\%L}"
 
 ### For histograms ###
 #set boxwidth 0.025
@@ -116,7 +123,7 @@ y2units = 1
 zunits = 1
 
 plot \
-   "trace_8b3e1f2b1d894c35965a216eeb909fcd.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0 \
+   "trace_32ce01fc4c7e446193fb39af6a3197a9.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0 \
    binary format='%float64%float64' \
    with points \
    linecolor 1 \

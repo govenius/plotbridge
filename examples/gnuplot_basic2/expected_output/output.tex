@@ -129,47 +129,77 @@
       \expandafter\def\csname LT8\endcsname{\color{black}}%
     \fi
   \fi
-  \setlength{\unitlength}{0.0500bp}%
-  \begin{picture}(12000.00,6000.00)%
+    \setlength{\unitlength}{0.0500bp}%
+    \ifx\gptboxheight\undefined%
+      \newlength{\gptboxheight}%
+      \newlength{\gptboxwidth}%
+      \newsavebox{\gptboxtext}%
+    \fi%
+    \setlength{\fboxrule}{0.5pt}%
+    \setlength{\fboxsep}{1pt}%
+\begin{picture}(12000.00,6000.00)%
     \gplgaddtomacro\gplbacktext{%
       \csname LTb\endcsname%
-      \put(682,704){\makebox(0,0)[r]{\strut{}-4}}%
+      \put(682,704){\makebox(0,0)[r]{\strut{}$-4$}}%
       \csname LTb\endcsname%
-      \put(682,1333){\makebox(0,0)[r]{\strut{}-3}}%
+      \put(682,1333){\makebox(0,0)[r]{\strut{}$-3$}}%
       \csname LTb\endcsname%
-      \put(682,1962){\makebox(0,0)[r]{\strut{}-2}}%
+      \put(682,1962){\makebox(0,0)[r]{\strut{}$-2$}}%
       \csname LTb\endcsname%
-      \put(682,2591){\makebox(0,0)[r]{\strut{}-1}}%
+      \put(682,2591){\makebox(0,0)[r]{\strut{}$-1$}}%
       \csname LTb\endcsname%
-      \put(682,3220){\makebox(0,0)[r]{\strut{} 0}}%
+      \put(682,3220){\makebox(0,0)[r]{\strut{}$0$}}%
       \csname LTb\endcsname%
-      \put(682,3848){\makebox(0,0)[r]{\strut{} 1}}%
+      \put(682,3848){\makebox(0,0)[r]{\strut{}$1$}}%
       \csname LTb\endcsname%
-      \put(682,4477){\makebox(0,0)[r]{\strut{} 2}}%
+      \put(682,4477){\makebox(0,0)[r]{\strut{}$2$}}%
       \csname LTb\endcsname%
-      \put(682,5106){\makebox(0,0)[r]{\strut{} 3}}%
+      \put(682,5106){\makebox(0,0)[r]{\strut{}$3$}}%
       \csname LTb\endcsname%
-      \put(682,5735){\makebox(0,0)[r]{\strut{} 4}}%
+      \put(682,5735){\makebox(0,0)[r]{\strut{}$4$}}%
       \csname LTb\endcsname%
-      \put(814,484){\makebox(0,0){\strut{}-6}}%
+      \put(814,484){\makebox(0,0){\strut{}$-6$}}%
       \csname LTb\endcsname%
-      \put(2261,484){\makebox(0,0){\strut{}-4}}%
+      \put(2147,484){\makebox(0,0){\strut{}$-4$}}%
       \csname LTb\endcsname%
-      \put(3707,484){\makebox(0,0){\strut{}-2}}%
+      \put(3480,484){\makebox(0,0){\strut{}$-2$}}%
       \csname LTb\endcsname%
-      \put(5154,484){\makebox(0,0){\strut{} 0}}%
+      \put(4813,484){\makebox(0,0){\strut{}$0$}}%
       \csname LTb\endcsname%
-      \put(6601,484){\makebox(0,0){\strut{} 2}}%
+      \put(6146,484){\makebox(0,0){\strut{}$2$}}%
       \csname LTb\endcsname%
-      \put(8047,484){\makebox(0,0){\strut{} 4}}%
+      \put(7479,484){\makebox(0,0){\strut{}$4$}}%
       \csname LTb\endcsname%
-      \put(9494,484){\makebox(0,0){\strut{} 6}}%
-      \put(176,3219){\rotatebox{-270}{\makebox(0,0){\strut{}voltage ($\mu$V)}}}%
-      \put(9713,3219){\rotatebox{-270}{\makebox(0,0){\strut{}$\frac {dV}{dI}$ ($k\Omega$)}}}%
-      \put(5154,154){\makebox(0,0){\strut{}current (nA)}}%
-      \put(5154,5625){\makebox(0,0){\strut{}}}%
+      \put(8812,484){\makebox(0,0){\strut{}$6$}}%
+      \colorrgb{0.00,0.00,0.00}%
+      \put(8944,704){\makebox(0,0)[l]{\strut{}$-1$}}%
+      \colorrgb{0.00,0.00,0.00}%
+      \put(8944,1263){\makebox(0,0)[l]{\strut{}$-0.5$}}%
+      \colorrgb{0.00,0.00,0.00}%
+      \put(8944,1822){\makebox(0,0)[l]{\strut{}$0$}}%
+      \colorrgb{0.00,0.00,0.00}%
+      \put(8944,2381){\makebox(0,0)[l]{\strut{}$0.5$}}%
+      \colorrgb{0.00,0.00,0.00}%
+      \put(8944,2940){\makebox(0,0)[l]{\strut{}$1$}}%
+      \colorrgb{0.00,0.00,0.00}%
+      \put(8944,3499){\makebox(0,0)[l]{\strut{}$1.5$}}%
+      \colorrgb{0.00,0.00,0.00}%
+      \put(8944,4058){\makebox(0,0)[l]{\strut{}$2$}}%
+      \colorrgb{0.00,0.00,0.00}%
+      \put(8944,4617){\makebox(0,0)[l]{\strut{}$2.5$}}%
+      \colorrgb{0.00,0.00,0.00}%
+      \put(8944,5176){\makebox(0,0)[l]{\strut{}$3$}}%
+      \colorrgb{0.00,0.00,0.00}%
+      \put(8944,5735){\makebox(0,0)[l]{\strut{}$3.5$}}%
     }%
     \gplgaddtomacro\gplfronttext{%
+      \csname LTb\endcsname%
+      \put(176,3219){\rotatebox{-270}{\makebox(0,0){\strut{}voltage ($\mu$V)}}}%
+      \colorrgb{0.00,0.00,0.00}%
+      \put(9713,3219){\rotatebox{-270}{\makebox(0,0){\strut{}$\frac {dV}{dI}$ ($k\Omega$)}}}%
+      \csname LTb\endcsname%
+      \put(4813,154){\makebox(0,0){\strut{}current (nA)}}%
+      \put(4813,5625){\makebox(0,0){\strut{}}}%
       \csname LTb\endcsname%
       \put(11012,1034){\makebox(0,0)[r]{\strut{}voltage}}%
       \csname LTb\endcsname%

@@ -58,96 +58,105 @@
  56 
  57 unset multiplot
  58 
- 59 pngdpi_per_screendpi = 96./72
- 60 figwidthinpng = ceil(figwidth*pngdpi_per_screendpi)
- 61 figheightinpng = ceil(figheight*pngdpi_per_screendpi)
- 62 set terminal pngcairo size figwidthinpng,figheightinpng enhanced \
- 63     font basefont linewidth baselinewidth
- 64 set output "output.png"
- 65 
+ 59 
+ 60 pngdpi_per_screendpi = 96./72
+ 61 figwidthinpng = ceil(figwidth*pngdpi_per_screendpi)
+ 62 figheightinpng = ceil(figheight*pngdpi_per_screendpi)
+ 63 set terminal pngcairo size figwidthinpng,figheightinpng enhanced \
+ 64     font basefont linewidth baselinewidth
+ 65 set output "output.png"
  66 
  67 
- 68 set xlabel "x(t)"
- 69 set ylabel "y(t)"
- 70 set zlabel "t"
- 71 
- 72 set grid
+ 68 
+ 69 
+ 70 set xlabel "x(t)"
+ 71 set ylabel "y(t)"
+ 72 set zlabel "t"
  73 
- 74 
- 75 set title "spirals"
+ 74 set grid
+ 75 
  76 
- 77 ###
- 78 # Some common formatting
+ 77 set title "spirals"
+ 78 
  79 ###
- 80 
- 81 # Tick formatting
- 82 #set format x "%.2g"
- 83 
- 84 ### Ticks ###
+ 80 # Some common formatting
+ 81 ###
+ 82 
+ 83 # In the classic color theme, linetype 5 is yellow which is hard to see on a white background.
+ 84 set linetype 5 linecolor rgb "red"
  85 
- 86 #set xtics 12.5,2,300 # for log scale
- 87 #set xtics 0,50,300 # for linear scale
- 88 #set xtics add ("200" 200)
- 89 #set mxtics 5
+ 86 # Tick formatting
+ 87 #set format x "%.2g"
+ 88 
+ 89 ### Ticks ###
  90 
- 91 
- 92 
- 93 ### For histograms ###
- 94 #set boxwidth 0.025
- 95 #set style fill transparent solid 0.5 noborder
- 96 
- 97 ### Annotation ###
- 98 
- 99 # basic
-100 #set label "label A"  at first  30, first  60   # in data coordinates
-101 
-102 # more options
-103 #set label "{/Arial-Bold label B}"  at graph  0.9, graph  0.72 \
-104 #                                   rotate by 8 left \
-105 #                                   tc rgb "#777777"
-106 
-107 # legend position
-108 #set key out vert # place legends outside the plot area
-109 #set key cent right
-110 #set key left top
-111 #set key above title "Legend" box 3
-112 set key right bottom
+ 91 #set xtics 12.5,2,300 # for log scale
+ 92 #set xtics 0,50,300 # for linear scale
+ 93 #set xtics add ("200" 200)
+ 94 #set mxtics 5
+ 95 set mxtics
+ 96 set mytics
+ 97 
+ 98 logformat = "10^{\%L}"
+ 99 
+100 ### For histograms ###
+101 #set boxwidth 0.025
+102 #set style fill transparent solid 0.5 noborder
+103 
+104 ### Annotation ###
+105 
+106 # basic
+107 #set label "label A"  at first  30, first  60   # in data coordinates
+108 
+109 # more options
+110 #set label "{/Arial-Bold label B}"  at graph  0.9, graph  0.72 \
+111 #                                   rotate by 8 left \
+112 #                                   tc rgb "#777777"
 113 
-114 xunits = 1
-115 x2units = 1
-116 yunits = 1
-117 y2units = 1
-118 zunits = 1
-119 
-120 splot \
-121    "trace_da501114fd3c4afbb5bbfbf095550d52.bytes" using (column(1)/xunits):(column(2)/yunits):(column(3)/zunits) every ::0:0 \
-122    binary format='%float64%float64%float64' \
-123    with linespoints \
-124    linecolor 1 \
-125    pointtype 7 \
-126    linetype 1 \
-127    title "", \
-128    "trace_181090db1b38467eaf89133b71ac6119.bytes" using (column(1)/xunits):(column(2)/yunits):(column(3)/zunits) every ::0:0 \
+114 # legend position
+115 #set key out vert # place legends outside the plot area
+116 #set key cent right
+117 #set key left top
+118 #set key above title "Legend" box 3
+119 set key right bottom
+120 
+121 xunits = 1
+122 x2units = 1
+123 yunits = 1
+124 y2units = 1
+125 zunits = 1
+126 
+127 splot \
+128    "trace_1a56e544f8d645bf9ce328116a3e9d1c.bytes" using (column(1)/xunits):(column(2)/yunits):(column(3)/zunits) every ::0:0 \
 129    binary format='%float64%float64%float64' \
 130    with linespoints \
-131    linecolor 2 \
+131    linecolor 1 \
 132    pointtype 7 \
 133    linetype 1 \
-134    title ""
-135 
-136 
-137 
-138 # Check if the qt terminal is available.
-139 if (strstrt(GPVAL_TERMINALS, 'qt') > 0) interactive_terminal = "qt"; \
-140 else interactive_terminal = "wxt enhanced"
-141 
-142 set term @interactive_terminal size figwidth,figheight title "spirals" dashed
-143 # replace "dashed" with "solid" if you want to ignore "linetype"/"lt" in plot
+134    dashtype 1 \
+135    title "", \
+136    "trace_fade7788e4d14744a639a40ded0d076e.bytes" using (column(1)/xunits):(column(2)/yunits):(column(3)/zunits) every ::0:0 \
+137    binary format='%float64%float64%float64' \
+138    with linespoints \
+139    linecolor 2 \
+140    pointtype 7 \
+141    linetype 1 \
+142    dashtype 1 \
+143    title ""
 144 
-145 replot
-146 bind Close "exit gnuplot"
-147 
-148 
+145 
+146 
+147 # Check if the qt terminal is available.
+148 if (strstrt(GPVAL_TERMINALS, 'qt') > 0) interactive_terminal = "qt"; \
+149 else interactive_terminal = "wxt enhanced"
+150 
+151 set term @interactive_terminal size figwidth,figheight title "spirals" dashed
+152 # replace "dashed" with "solid" if you want to ignore "linetype"/"lt" in plot
+153 
+154 replot
+155 bind Close "exit gnuplot"
+156 
+157 
 ---end of spirals.gnuplot---
 
 Replotting every 1 seconds (if plot script modification time changes)...

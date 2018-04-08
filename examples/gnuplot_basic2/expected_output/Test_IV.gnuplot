@@ -57,6 +57,7 @@ baselinewidth = 1.
 
 unset multiplot
 
+
 set terminal epslatex size figwidth_in_inches,figheight_in_inches color colortext standalone \
     font basefont linewidth baselinewidth \
     header "\\newcommand{\\ft}[0]{\\footnotesize}"
@@ -64,9 +65,10 @@ set output "output.tex"
 
 
 
+
 set xlabel "current (nA)"
 set ylabel "voltage ($\\mu$V)"
-set y2label "$\\frac {dV}{dI}$ ($k\\Omega$)"
+set y2label "$\\frac {dV}{dI}$ ($k\\Omega$)" textcolor rgb "black"
 
 set grid
 
@@ -77,6 +79,9 @@ set title ""
 # Some common formatting
 ###
 
+# In the classic color theme, linetype 5 is yellow which is hard to see on a white background.
+set linetype 5 linecolor rgb "red"
+
 # Tick formatting
 #set format x "%.2g"
 
@@ -86,8 +91,10 @@ set title ""
 #set xtics 0,50,300 # for linear scale
 #set xtics add ("200" 200)
 #set mxtics 5
+set mxtics
+set mytics
 
-
+logformat = "$10^{\%L}$"
 
 ### For histograms ###
 #set boxwidth 0.025
@@ -109,7 +116,9 @@ set title ""
 #set key left top
 #set key above title "Legend" box 3
 set key outside
-
+set ytics nomirror
+set y2tics textcolor rgb "black"
+set my2tics
 xunits = 1e-09
 x2units = 1
 yunits = 1e-06
@@ -117,18 +126,19 @@ y2units = 1000.0
 zunits = 1
 
 plot \
-   "trace_fe199df08e7d4433957bf05a52083517.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0 \
+   "trace_6273bdb94ce84a94966e7aad1ce9e2ec.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0 \
    binary format='%float64%float64' \
    with points \
      linecolor rgb "black" \
      pointtype 7 \
    title "voltage" \
      axes x1y1, \
-        "trace_a7881b26dd664696b2104c76d29d8f3d.bytes" using (column(1)/xunits):(column(2)/y2units) every ::0:0 \
+        "trace_19e7afa53eae444294aef8b0fc12f227.bytes" using (column(1)/xunits):(column(2)/y2units) every ::0:0 \
    binary format='%float64%float64' \
    with lines \
      linecolor rgb "red" \
      linetype 1 \
+   dashtype 1 \
    title "$\\frac {dV}{dI}$" \
      axes x1y2  
 

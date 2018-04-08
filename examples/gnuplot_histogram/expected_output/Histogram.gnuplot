@@ -57,12 +57,14 @@ baselinewidth = 1.
 
 unset multiplot
 
+
 pngdpi_per_screendpi = 96./72
 figwidthinpng = ceil(figwidth*pngdpi_per_screendpi)
 figheightinpng = ceil(figheight*pngdpi_per_screendpi)
 set terminal pngcairo size figwidthinpng,figheightinpng enhanced \
     font basefont linewidth baselinewidth
 set output "output.png"
+
 
 
 
@@ -78,6 +80,9 @@ set title "Histogram"
 # Some common formatting
 ###
 
+# In the classic color theme, linetype 5 is yellow which is hard to see on a white background.
+set linetype 5 linecolor rgb "red"
+
 # Tick formatting
 #set format x "%.2g"
 
@@ -87,8 +92,10 @@ set title "Histogram"
 #set xtics 0,50,300 # for linear scale
 #set xtics add ("200" 200)
 #set mxtics 5
+set mxtics
+set mytics
 
-
+logformat = "10^{\%L}"
 
 ### For histograms ###
 #set boxwidth 0.025
@@ -123,14 +130,14 @@ set style fill transparent solid 0.9 noborder
 
 
 plot \
-   "trace_a1ad41e23bac4890ab0570021293874c.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0 \
+   "trace_8705c82c6d6e4fcc9b4f64edfd4f9873.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0 \
    binary format='%float64%float64' \
    with boxes \
    linecolor 1 \
    pointtype 7 \
    title "" \
    axes x1y1, \
-   "trace_e57e6bc46fb6449fb83947825ad6dd4a.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0 \
+   "trace_64b8ec6a1a754882a321c551d2be9f39.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0 \
    binary format='%float64%float64' \
    with boxes \
    linecolor 2 \

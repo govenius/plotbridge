@@ -57,12 +57,14 @@ baselinewidth = 1.
 
 unset multiplot
 
+
 pngdpi_per_screendpi = 96./72
 figwidthinpng = ceil(figwidth*pngdpi_per_screendpi)
 figheightinpng = ceil(figheight*pngdpi_per_screendpi)
 set terminal pngcairo size figwidthinpng,figheightinpng enhanced \
     font basefont linewidth baselinewidth
 set output "output.png"
+
 
 
 
@@ -76,6 +78,9 @@ set title "spiral"
 # Some common formatting
 ###
 
+# In the classic color theme, linetype 5 is yellow which is hard to see on a white background.
+set linetype 5 linecolor rgb "red"
+
 # Tick formatting
 #set format x "%.2g"
 
@@ -85,8 +90,10 @@ set title "spiral"
 #set xtics 0,50,300 # for linear scale
 #set xtics add ("200" 200)
 #set mxtics 5
+set mxtics
+set mytics
 
-
+logformat = "10^{\%L}"
 
 ### For histograms ###
 #set boxwidth 0.025
@@ -116,11 +123,12 @@ y2units = 1
 zunits = 1
 
 plot \
-   "vectorized_trace_4ae363befc874b80bbae9dc4cea5d727.bytes" using (column(1)/xunits):(column(2)/yunits):(column(3)/xunits):(column(4)/yunits) every ::0:0 \
+   "vectorized_trace_59d9fa5a878d4108a579208a96bf1b78.bytes" using (column(1)/xunits):(column(2)/yunits):(column(3)/xunits):(column(4)/yunits) every ::0:0 \
    binary format='%float64%float64%float64%float64' \
    with vectors head filled \
    linecolor 1 \
    linetype 1 \
+   dashtype 1 \
    title "" \
    axes x1y1
 

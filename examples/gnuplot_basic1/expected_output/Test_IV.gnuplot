@@ -57,12 +57,14 @@ baselinewidth = 1.
 
 unset multiplot
 
+
 pngdpi_per_screendpi = 96./72
 figwidthinpng = ceil(figwidth*pngdpi_per_screendpi)
 figheightinpng = ceil(figheight*pngdpi_per_screendpi)
 set terminal pngcairo size figwidthinpng,figheightinpng enhanced \
     font basefont linewidth baselinewidth
 set output "output.png"
+
 
 
 
@@ -79,6 +81,9 @@ set title "Fake IV"
 # Some common formatting
 ###
 
+# In the classic color theme, linetype 5 is yellow which is hard to see on a white background.
+set linetype 5 linecolor rgb "red"
+
 # Tick formatting
 #set format x "%.2g"
 
@@ -88,8 +93,10 @@ set title "Fake IV"
 #set xtics 0,50,300 # for linear scale
 #set xtics add ("200" 200)
 #set mxtics 5
+set mxtics
+set mytics
 
-
+logformat = "10^{\%L}"
 
 ### For histograms ###
 #set boxwidth 0.025
@@ -119,14 +126,14 @@ y2units = 1
 zunits = 1
 
 plot \
-   "trace_9acc8cff00ad438a84757b9d2be6d919.bytes" using (column(1)/xunits):(column(2)/yunits):(column(3)/yunits) every ::0:0 \
+   "trace_62e25ebc3e8244df80153eff4a4d491c.bytes" using (column(1)/xunits):(column(2)/yunits):(column(3)/yunits) every ::0:0 \
    binary format='%float64%float64%float64' \
    with yerrorbars         \
    linecolor 1 \
    pointtype 7 \
    title "voltage 0" \
      axes x1y1, \
-        "trace_f521b15922a84e60bacaa4797c30567c.bytes" using (column(1)/xunits):(column(2)/yunits):(column(3)/yunits) every ::0:0 \
+        "trace_d562a6aa376c4da6ba08d5489bd3ea12.bytes" using (column(1)/xunits):(column(2)/yunits):(column(3)/yunits) every ::0:0 \
    binary format='%float64%float64%float64' \
    with yerrorbars         \
    linecolor 2 \

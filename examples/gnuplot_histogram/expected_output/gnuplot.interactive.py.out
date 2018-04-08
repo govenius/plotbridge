@@ -58,118 +58,125 @@
  56 
  57 unset multiplot
  58 
- 59 pngdpi_per_screendpi = 96./72
- 60 figwidthinpng = ceil(figwidth*pngdpi_per_screendpi)
- 61 figheightinpng = ceil(figheight*pngdpi_per_screendpi)
- 62 set terminal pngcairo size figwidthinpng,figheightinpng enhanced \
- 63     font basefont linewidth baselinewidth
- 64 set output "output.png"
- 65 
+ 59 
+ 60 pngdpi_per_screendpi = 96./72
+ 61 figwidthinpng = ceil(figwidth*pngdpi_per_screendpi)
+ 62 figheightinpng = ceil(figheight*pngdpi_per_screendpi)
+ 63 set terminal pngcairo size figwidthinpng,figheightinpng enhanced \
+ 64     font basefont linewidth baselinewidth
+ 65 set output "output.png"
  66 
  67 
- 68 set xlabel "energy (keV)"
- 69 set ylabel "count"
- 70 
- 71 set grid
+ 68 
+ 69 
+ 70 set xlabel "energy (keV)"
+ 71 set ylabel "count"
  72 
- 73 
- 74 set title "Histogram"
+ 73 set grid
+ 74 
  75 
- 76 ###
- 77 # Some common formatting
+ 76 set title "Histogram"
+ 77 
  78 ###
- 79 
- 80 # Tick formatting
- 81 #set format x "%.2g"
- 82 
- 83 ### Ticks ###
+ 79 # Some common formatting
+ 80 ###
+ 81 
+ 82 # In the classic color theme, linetype 5 is yellow which is hard to see on a white background.
+ 83 set linetype 5 linecolor rgb "red"
  84 
- 85 #set xtics 12.5,2,300 # for log scale
- 86 #set xtics 0,50,300 # for linear scale
- 87 #set xtics add ("200" 200)
- 88 #set mxtics 5
+ 85 # Tick formatting
+ 86 #set format x "%.2g"
+ 87 
+ 88 ### Ticks ###
  89 
- 90 
- 91 
- 92 ### For histograms ###
- 93 #set boxwidth 0.025
- 94 #set style fill transparent solid 0.5 noborder
- 95 
- 96 ### Annotation ###
- 97 
- 98 # basic
- 99 #set label "label A"  at first  30, first  60   # in data coordinates
-100 
-101 # more options
-102 #set label "{/Arial-Bold label B}"  at graph  0.9, graph  0.72 \
-103 #                                   rotate by 8 left \
-104 #                                   tc rgb "#777777"
-105 
-106 # legend position
-107 #set key out vert # place legends outside the plot area
-108 #set key cent right
-109 #set key left top
-110 #set key above title "Legend" box 3
-111 set key right bottom
+ 90 #set xtics 12.5,2,300 # for log scale
+ 91 #set xtics 0,50,300 # for linear scale
+ 92 #set xtics add ("200" 200)
+ 93 #set mxtics 5
+ 94 set mxtics
+ 95 set mytics
+ 96 
+ 97 logformat = "10^{\%L}"
+ 98 
+ 99 ### For histograms ###
+100 #set boxwidth 0.025
+101 #set style fill transparent solid 0.5 noborder
+102 
+103 ### Annotation ###
+104 
+105 # basic
+106 #set label "label A"  at first  30, first  60   # in data coordinates
+107 
+108 # more options
+109 #set label "{/Arial-Bold label B}"  at graph  0.9, graph  0.72 \
+110 #                                   rotate by 8 left \
+111 #                                   tc rgb "#777777"
 112 
-113 xunits = 1
-114 x2units = 1
-115 yunits = 1
-116 y2units = 1
-117 zunits = 1
-118 
-119 ### For histograms ###
-120 #set boxwidth 0.1 # set the bar width manually
-121 set style fill transparent solid 0.9 noborder
-122 
-123 
-124 plot \
-125    "trace_a1ad41e23bac4890ab0570021293874c.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0 \
-126    binary format='%float64%float64' \
-127    with boxes \
-128    linecolor 1 \
-129    pointtype 7 \
-130    title "" \
-131    axes x1y1, \
-132    "trace_e57e6bc46fb6449fb83947825ad6dd4a.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0 \
+113 # legend position
+114 #set key out vert # place legends outside the plot area
+115 #set key cent right
+116 #set key left top
+117 #set key above title "Legend" box 3
+118 set key right bottom
+119 
+120 xunits = 1
+121 x2units = 1
+122 yunits = 1
+123 y2units = 1
+124 zunits = 1
+125 
+126 ### For histograms ###
+127 #set boxwidth 0.1 # set the bar width manually
+128 set style fill transparent solid 0.9 noborder
+129 
+130 
+131 plot \
+132    "trace_8705c82c6d6e4fcc9b4f64edfd4f9873.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0 \
 133    binary format='%float64%float64' \
 134    with boxes \
-135    linecolor 2 \
+135    linecolor 1 \
 136    pointtype 7 \
 137    title "" \
-138    axes x1y1
-139 
-140 
-141 
-142 # Check if the qt terminal is available.
-143 if (strstrt(GPVAL_TERMINALS, 'qt') > 0) interactive_terminal = "qt"; \
-144 else interactive_terminal = "wxt enhanced"
-145 
-146 set term @interactive_terminal size figwidth,figheight title "Histogram" dashed
-147 # replace "dashed" with "solid" if you want to ignore "linetype"/"lt" in plot
+138    axes x1y1, \
+139    "trace_64b8ec6a1a754882a321c551d2be9f39.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0 \
+140    binary format='%float64%float64' \
+141    with boxes \
+142    linecolor 2 \
+143    pointtype 7 \
+144    title "" \
+145    axes x1y1
+146 
+147 
 148 
-149 replot
-150 bind Close "exit gnuplot"
-151 
+149 # Check if the qt terminal is available.
+150 if (strstrt(GPVAL_TERMINALS, 'qt') > 0) interactive_terminal = "qt"; \
+151 else interactive_terminal = "wxt enhanced"
 152 
+153 set term @interactive_terminal size figwidth,figheight title "Histogram" dashed
+154 # replace "dashed" with "solid" if you want to ignore "linetype"/"lt" in plot
+155 
+156 replot
+157 bind Close "exit gnuplot"
+158 
+159 
 ---end of Histogram.gnuplot---
 
 
-plot    "trace_a1ad41e23bac4890ab0570021293874c.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 1    pointtype 7    title ""    axes x1y1,    "trace_e57e6bc46fb6449fb83947825ad6dd4a.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 2    pointtype 7    title ""    axes x1y1
+plot    "trace_8705c82c6d6e4fcc9b4f64edfd4f9873.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 1    pointtype 7    title ""    axes x1y1,    "trace_64b8ec6a1a754882a321c551d2be9f39.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 2    pointtype 7    title ""    axes x1y1
                                                                                                                                                                                    ^
-"Histogram.gnuplot", line 139: warning: No pointtype specifier allowed, here
+"Histogram.gnuplot", line 146: warning: No pointtype specifier allowed, here
 
-plot    "trace_a1ad41e23bac4890ab0570021293874c.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 1    pointtype 7    title ""    axes x1y1,    "trace_e57e6bc46fb6449fb83947825ad6dd4a.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 2    pointtype 7    title ""    axes x1y1
+plot    "trace_8705c82c6d6e4fcc9b4f64edfd4f9873.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 1    pointtype 7    title ""    axes x1y1,    "trace_64b8ec6a1a754882a321c551d2be9f39.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 2    pointtype 7    title ""    axes x1y1
                                                                                                                                                                                                                                                                                                                                                                                                        ^
-"Histogram.gnuplot", line 139: warning: No pointtype specifier allowed, here
+"Histogram.gnuplot", line 146: warning: No pointtype specifier allowed, here
 
-plot    "trace_a1ad41e23bac4890ab0570021293874c.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 1    pointtype 7    title ""    axes x1y1,    "trace_e57e6bc46fb6449fb83947825ad6dd4a.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 2    pointtype 7    title ""    axes x1y1
+plot    "trace_8705c82c6d6e4fcc9b4f64edfd4f9873.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 1    pointtype 7    title ""    axes x1y1,    "trace_64b8ec6a1a754882a321c551d2be9f39.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 2    pointtype 7    title ""    axes x1y1
                                                                                                                                                                                    ^
-"Histogram.gnuplot", line 150: warning: No pointtype specifier allowed, here
+"Histogram.gnuplot", line 157: warning: No pointtype specifier allowed, here
 
-plot    "trace_a1ad41e23bac4890ab0570021293874c.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 1    pointtype 7    title ""    axes x1y1,    "trace_e57e6bc46fb6449fb83947825ad6dd4a.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 2    pointtype 7    title ""    axes x1y1
+plot    "trace_8705c82c6d6e4fcc9b4f64edfd4f9873.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 1    pointtype 7    title ""    axes x1y1,    "trace_64b8ec6a1a754882a321c551d2be9f39.bytes" using (column(1)/xunits):(column(2)/yunits) every ::0:0    binary format='%float64%float64'    with boxes    linecolor 2    pointtype 7    title ""    axes x1y1
                                                                                                                                                                                                                                                                                                                                                                                                        ^
-"Histogram.gnuplot", line 150: warning: No pointtype specifier allowed, here
+"Histogram.gnuplot", line 157: warning: No pointtype specifier allowed, here
 Replotting every 1 seconds (if plot script modification time changes)...
 Hit <ctrl> + C to exit.
 The plot engine has terminated. Exiting.

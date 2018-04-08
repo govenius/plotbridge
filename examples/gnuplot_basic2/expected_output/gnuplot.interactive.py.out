@@ -58,64 +58,71 @@
  56 
  57 unset multiplot
  58 
- 59 pngdpi_per_screendpi = 96./72
- 60 figwidthinpng = ceil(figwidth*pngdpi_per_screendpi)
- 61 figheightinpng = ceil(figheight*pngdpi_per_screendpi)
- 62 set terminal pngcairo size figwidthinpng,figheightinpng enhanced \
- 63     font basefont linewidth baselinewidth
- 64 set output "output.png"
- 65 
+ 59 
+ 60 pngdpi_per_screendpi = 96./72
+ 61 figwidthinpng = ceil(figwidth*pngdpi_per_screendpi)
+ 62 figheightinpng = ceil(figheight*pngdpi_per_screendpi)
+ 63 set terminal pngcairo size figwidthinpng,figheightinpng enhanced \
+ 64     font basefont linewidth baselinewidth
+ 65 set output "output.png"
  66 
  67 
  68 
- 69 set grid
+ 69 
  70 
- 71 
- 72 set title "Test IV"
+ 71 set grid
+ 72 
  73 
- 74 ###
- 75 # Some common formatting
+ 74 set title "Test IV"
+ 75 
  76 ###
- 77 
- 78 # Tick formatting
- 79 #set format x "%.2g"
- 80 
- 81 ### Ticks ###
+ 77 # Some common formatting
+ 78 ###
+ 79 
+ 80 # In the classic color theme, linetype 5 is yellow which is hard to see on a white background.
+ 81 set linetype 5 linecolor rgb "red"
  82 
- 83 #set xtics 12.5,2,300 # for log scale
- 84 #set xtics 0,50,300 # for linear scale
- 85 #set xtics add ("200" 200)
- 86 #set mxtics 5
+ 83 # Tick formatting
+ 84 #set format x "%.2g"
+ 85 
+ 86 ### Ticks ###
  87 
- 88 
- 89 
- 90 ### For histograms ###
- 91 #set boxwidth 0.025
- 92 #set style fill transparent solid 0.5 noborder
- 93 
- 94 ### Annotation ###
- 95 
- 96 # basic
- 97 #set label "label A"  at first  30, first  60   # in data coordinates
- 98 
- 99 # more options
-100 #set label "{/Arial-Bold label B}"  at graph  0.9, graph  0.72 \
-101 #                                   rotate by 8 left \
-102 #                                   tc rgb "#777777"
-103 
-104 # legend position
-105 #set key out vert # place legends outside the plot area
-106 #set key cent right
-107 #set key left top
-108 #set key above title "Legend" box 3
-109 set key right bottom
+ 88 #set xtics 12.5,2,300 # for log scale
+ 89 #set xtics 0,50,300 # for linear scale
+ 90 #set xtics add ("200" 200)
+ 91 #set mxtics 5
+ 92 set mxtics
+ 93 set mytics
+ 94 
+ 95 logformat = "10^{\%L}"
+ 96 
+ 97 ### For histograms ###
+ 98 #set boxwidth 0.025
+ 99 #set style fill transparent solid 0.5 noborder
+100 
+101 ### Annotation ###
+102 
+103 # basic
+104 #set label "label A"  at first  30, first  60   # in data coordinates
+105 
+106 # more options
+107 #set label "{/Arial-Bold label B}"  at graph  0.9, graph  0.72 \
+108 #                                   rotate by 8 left \
+109 #                                   tc rgb "#777777"
 110 
-111 xunits = 1
-112 x2units = 1
-113 yunits = 1
-114 y2units = 1
-115 zunits = 1
-116 
+111 # legend position
+112 #set key out vert # place legends outside the plot area
+113 #set key cent right
+114 #set key left top
+115 #set key above title "Legend" box 3
+116 set key right bottom
+117 
+118 xunits = 1
+119 x2units = 1
+120 yunits = 1
+121 y2units = 1
+122 zunits = 1
+123 
 ---end of Test_IV.gnuplot---
 
 Replotting every 1 seconds (if plot script modification time changes)...
