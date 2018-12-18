@@ -27,6 +27,17 @@ import itertools
 import subprocess
 import re
 
+ # Python 2/3 compatibility
+try:
+  basestring # Python 2
+except NameError:
+  basestring = str # Python 3
+
+try:
+  import configparser # Python 3
+except ModuleNotFoundError:
+  import ConfigParser as configparser # Python 2
+
 
 class Plot():
   '''Container for a set of traces ("a plot") and a
@@ -271,6 +282,7 @@ class Plot():
       if (helper_file.endswith('~')
         or helper_file.startswith('.')
         or helper_file.startswith('#')
+        or helper_file.startswith('_')
         or helper_file.endswith('.template')
         or helper_file.endswith('.cfg')): continue
       shutil.copy(os.path.join(template_dir, helper_file),
@@ -680,7 +692,7 @@ class Plot():
     else:
       # Convert all inputs to float for simplicity.
       # Should not be a big problem for plotting purposes...
-      dd = dd.astype(np.float)
+      if dd.dtype != np.float: dd = np.array(dd, dtype=np.float)
 
       # Use the default numpy binary format for output
       # Write to a temp file (.new) first and rename it once its complete.
@@ -746,8 +758,7 @@ class Plot():
 
   def _read_config(self):
     template_dir, template_name, template_ext = self.get_template()
-    import ConfigParser
-    cfg = ConfigParser.SafeConfigParser()
+    cfg = configparser.SafeConfigParser()
     cfg_path = os.path.join(template_dir, template_name + '.cfg')
     try:
       cfg.read(cfg_path)

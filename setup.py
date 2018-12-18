@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='plotbridge',
-      version='1.0.2',
+      version='1.0.3',
       author='Joonas Govenius',
       py_modules=['plotbridge.py'],
       packages=['plotbridge'],

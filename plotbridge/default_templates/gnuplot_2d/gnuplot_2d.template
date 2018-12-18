@@ -2,7 +2,7 @@
 {% if traces %}
 
 plot \
-{% for trace in traces|sort(attribute='slowcoordinate') %}
+{% for trace in traces %}
    "{{trace.bytesfile}}" using (column(1)/x{{'2' if trace.top else ''}}units):(column(2)/y{{'2' if trace.right else ''}}units){% if trace.yerrorcol %}:(column({{1+trace.yerrorcol}})/y{{'2' if trace.right else ''}}units){% endif %} every ::0:0 \
    binary format='{% for col in trace.recordformat %}%{{col}}{% endfor %}' \
    with {% if trace.yerrorcol %}

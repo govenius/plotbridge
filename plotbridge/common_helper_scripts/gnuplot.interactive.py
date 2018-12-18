@@ -37,9 +37,9 @@ def exit_if_locked():
 
 def print_plot_script(fname):
   with open(fname, 'r') as f:
-    print '---start of %s---' % fname
-    for i,l in enumerate(f.read().split('\n')): print '%3d %s' % (i,l)
-    print '---end of %s---\n' % fname
+    print('---start of %s---' % fname)
+    for i,l in enumerate(f.read().split('\n')): print('%3d %s' % (i,l))
+    print('---end of %s---\n' % fname)
     sys.stdout.flush()
 
 exit_if_locked() # technically, this and the lock file creation should be done atomically...
@@ -69,8 +69,8 @@ try:
                                 stdin=subprocess.PIPE, stdout=sys.stdout, stderr=sys.stderr)
           plotted_once = True
 
-          print "Replotting every %g seconds (if plot script modification time changes)..." % replot_poll_period
-          print "Hit <ctrl> + C to exit."
+          print("Replotting every %g seconds (if plot script modification time changes)..." % replot_poll_period)
+          print("Hit <ctrl> + C to exit.")
 
       else:
 
@@ -92,7 +92,7 @@ try:
                 with open('pdflatex.out', 'w') as log_file:
                   subprocess.call(['pdflatex', '-halt-on-error', 'output'], stdin=None, stdout=log_file, stderr=log_file)
             except:
-              print 'Call to pdflatex failed. See pdflatex.out.'
+              print('Call to pdflatex failed. See pdflatex.out.')
 
         except OSError:
           pass # the plot script does not exist which is normal if the plot was overwritten.
@@ -104,4 +104,4 @@ finally:
   try: os.remove(lock_file)
   except: pass
 
-  print "The plot engine has terminated. Exiting."
+  print("The plot engine has terminated. Exiting.")
