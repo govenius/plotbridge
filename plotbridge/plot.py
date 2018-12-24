@@ -1,4 +1,4 @@
-# Copyright (C) 2016 Joonas Govenius <joonas.govenius@gmail.com>
+# Copyright (C) 2016-2018 Joonas Govenius <joonas.govenius@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -217,7 +217,7 @@ class Plot():
     :param update: update plot script?
     '''
     logging.info('Clearing plot %s...', self._name)
-    for trace_id in self._traces.keys(): self.remove_trace(trace_id, update=False)
+    for trace_id in list(self._traces.keys()): self.remove_trace(trace_id, update=False)
     if update: self.update()
 
   def update(self):
