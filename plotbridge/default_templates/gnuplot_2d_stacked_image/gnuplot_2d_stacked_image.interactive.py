@@ -65,7 +65,7 @@ try:
           plot_last_changed_time = os.path.getmtime(file_to_monitor)
           tex_last_changed_time = 0
           print_plot_script(plot_script)
-          gp = subprocess.Popen(['gnuplot', plot_script, '-'],
+          gp = subprocess.Popen(['gnuplot', plot_script, '-'], bufsize=0,
                                 stdin=subprocess.PIPE, stdout=sys.stdout, stderr=sys.stderr)
           plotted_once = True
 
@@ -79,7 +79,7 @@ try:
           plot_changed_time = os.path.getmtime(file_to_monitor)
           if plot_changed_time != plot_last_changed_time and gp != None:
             #logging.debug('Plot changed. Reloading plot script.')
-            gp.stdin.write('load "%s"\n' % plot_script)
+            gp.stdin.write(bytes('load "%s"\n' % plot_script, 'utf-8')
             plot_last_changed_time = plot_changed_time
 
           # compile .tex to PDF
