@@ -107,8 +107,8 @@ class TestExamples(unittest.TestCase):
             differing_lines = [ l for l in delta[3:] if l[:1] in ['+', '-'] and l.strip() not in ['+', '-'] ] # ignore changes to empty lines
             if len(differing_lines) > 0:
               n_differences += 1
-              print ''
-              print '\n'.join(delta)
+              print('')
+              print('\n'.join(delta))
 
           delta = [ l ]
         else:
