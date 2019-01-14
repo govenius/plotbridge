@@ -44,6 +44,7 @@ class TestExamples(unittest.TestCase):
       files_before_execution = os.listdir('.')
       process = subprocess.Popen([ 'python', example_name[len('gnuplot_'):] + '.py' ],
                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                 encoding='utf-8',
                                  cwd=exec_dir)
       process.wait()
       self.assertEqual(process.returncode, 0)
@@ -118,8 +119,8 @@ class TestExamples(unittest.TestCase):
 
       # compare the contents of the .bytes files
       for e, o in zip(bytes_refs_expected, bytes_refs_output):
-        with open(os.path.join(expected_output_dir, e), 'r') as f_e:
-          with open(os.path.join(output_dir, o), 'r') as f_o:
+        with open(os.path.join(expected_output_dir, e), 'rb') as f_e:
+          with open(os.path.join(output_dir, o), 'rb') as f_o:
             # This could fail if the byte orders are different on the
             # systems that generated the output and the
             # expected_output dirs.
