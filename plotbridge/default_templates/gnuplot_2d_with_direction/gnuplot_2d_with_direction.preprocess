@@ -41,7 +41,7 @@ for f in os.listdir('.'):
             np.diff(trace_data[:,0]),
             np.diff(trace_data[:,1])
             ]).T
-        print trace_data.shape
+        #print(trace_data.shape)
       else:
         # single point
         #   --> choose dx=0 and dy=.1 (arbitrarily)
