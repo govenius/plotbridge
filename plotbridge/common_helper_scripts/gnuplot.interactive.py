@@ -79,7 +79,7 @@ try:
           plot_changed_time = os.path.getmtime(file_to_monitor)
           if plot_changed_time != plot_last_changed_time and gp != None:
             #logging.debug('Plot changed. Reloading plot script.')
-            gp.stdin.write(bytes('load "%s"\n' % plot_script, 'utf-8'))
+            gp.stdin.write(('load "%s"\n' % plot_script).encode('utf-8'))
             plot_last_changed_time = plot_changed_time
 
           # compile .tex to PDF

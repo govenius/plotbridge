@@ -44,7 +44,6 @@ class TestExamples(unittest.TestCase):
       files_before_execution = os.listdir('.')
       process = subprocess.Popen([ 'python', example_name[len('gnuplot_'):] + '.py' ],
                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                                 encoding='utf-8',
                                  cwd=exec_dir)
       process.wait()
       self.assertEqual(process.returncode, 0)
