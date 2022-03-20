@@ -33,7 +33,7 @@ splot \
 
 ## List of slow coordinate values (if any)
 {% for trace in traces %}
-{% if trace.slowcoordinate != None %}# {{trace.bytesfile}} slowcoord = {{trace.slowcoordinate / (1 if global_opts.yunits == None else global_opts.yunits)}}
+{% if trace.slowcoordinate != None %}# {{trace.bytesfile}} slowcoord = {{ "%.9g"|format(trace.slowcoordinate / (1 if global_opts.yunits == None else global_opts.yunits))}}
 {% endif %}
 {% endfor %}
 

@@ -182,7 +182,7 @@ splot \
 # trace_9db956dcc9754ba298d4a1e713a35e93.bytes slowcoord = -0.108
 # trace_9752cab43c7b48ffbe20df2145932679.bytes slowcoord = -0.072
 # trace_7d65f7b0e8694cb68c1cdb9dab115ff1.bytes slowcoord = -0.036
-# trace_57561935f6234d2683c3e7e8990fa3a2.bytes slowcoord = 0.0
+# trace_57561935f6234d2683c3e7e8990fa3a2.bytes slowcoord = 0
 # trace_3bf8bce808f6404dae395b2e3da3dcf5.bytes slowcoord = 0.036
 # trace_82f8c04a63c7451bb9d17198c03a6fa6.bytes slowcoord = 0.072
 # trace_93f92332a51d437785490c4f6340da9f.bytes slowcoord = 0.108
