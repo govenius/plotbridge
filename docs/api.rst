@@ -18,7 +18,7 @@ Index
 Plot
 ----
 
-.. automodule:: plot
+.. automodule:: plotbridge.plot
 
 .. autoclass:: Plot
     :members:

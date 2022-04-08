@@ -1,3 +1,5 @@
+from plotbridge._metadata import __version__
+
 import logging
 import os
 import stat
