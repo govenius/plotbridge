@@ -220,11 +220,7 @@ class Plot():
               trim_blocks=True,
               keep_trailing_newline=True) # This option requires at least version 2.7 of jinja2
 
-    def defaultget(arr, key, default=''):
-      try: return arr[key]
-      except KeyError: return default
-
-    env.filters['defaultget'] = defaultget
+    env.filters['defaultget'] = lambda arr, key, default='': arr.get(key, default)
     env.filters['isint'] = lambda x: isinstance(x, int)
     env.filters['ifnone'] = lambda x, default='': default if x == None else x
     env.filters['allnone'] = lambda x: min(map(lambda y: y == None, x)) # check if all entries of iterable are None
