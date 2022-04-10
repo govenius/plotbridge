@@ -1,3 +1,6 @@
+''' See documentation for the Plot class.
+'''
+
 from plotbridge._metadata import __version__
 
 import logging

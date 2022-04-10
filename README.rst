@@ -8,5 +8,5 @@ formatting details, while allowing arbitrarily complex templates (and
 optional preprocessing steps) that can produce publication quality
 plots in an automated and repeatable way.
 
-See the `documentation <http://plotbridge.readthedocs.io>`_ at RTD (or
-the `docs subdirectory <docs>`_) for instructions on getting started.
+See the `documentation <http://plotbridge.readthedocs.io>`_ at RTD for
+instructions on getting started.
