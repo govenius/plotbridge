@@ -1,0 +1,6 @@
+# Specify the dependencies needed for builing the documentation
+# List the same dependencies here as in ../setup.cfg
+# (not sure if there's a more elegant way to read these directly from there)
+jinja2
+numpy
+scipy
